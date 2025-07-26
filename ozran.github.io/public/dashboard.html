@@ -1,0 +1,1654 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Security Dashboard - Ozran Secure Shield</title>
+        
+        <!-- SEO Meta Tags -->
+        <meta name="description" content="Manage your organization's cybersecurity training, view phishing simulation results, and monitor security awareness progress.">
+        <meta name="robots" content="noindex, nofollow">
+        <link rel="canonical" href="https://yourdomainname.com/dashboard.html">
+        
+        <!-- Favicon -->
+        <link rel="icon" type="image/x-icon" href="/favicon.ico">
+        <link rel="manifest" href="/manifest.json">
+        
+        <!-- Your existing CSS links -->
+        <link rel="stylesheet" href="index.css">
+        <link rel="stylesheet" href="dashboard.css">
+        <!-- ... rest of your existing head content -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Ozran Secure Shield</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-body">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <span class="logo-text">Ozran Shield</span>
+            </div>
+            <button class="sidebar-toggle" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active" data-section="overview" onclick="showSection('overview')">
+                        <i class="fas fa-chart-pie"></i>
+                        <span class="nav-text">Overview</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-section="employees" onclick="showSection('employees')">
+                        <i class="fas fa-users"></i>
+                        <span class="nav-text">Employees</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-section="campaigns" onclick="showSection('campaigns')">
+                        <i class="fas fa-bullhorn"></i>
+                        <span class="nav-text">Campaigns</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-section="templates" onclick="showSection('templates')">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="nav-text">Templates</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-section="profile" onclick="showSection('profile')">
+                        <i class="fas fa-user"></i>
+                        <span class="nav-text">Profile</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                <span class="nav-text">Logout</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Bar -->
+        <header class="top-bar">
+            <div class="top-bar-left">
+                <button class="mobile-sidebar-toggle" id="mobileSidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1 class="page-title" id="pageTitle">Overview</h1>
+            </div>
+            
+            <div class="top-bar-right">
+                <div class="search-container">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" class="search-input" placeholder="Search...">
+                </div>
+                
+                <button class="notification-btn">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </button>
+                
+                <div class="user-menu">
+                    <button class="user-menu-trigger" onclick="toggleUserMenu()">
+                        <img src="/api/placeholder/40/40" alt="User Avatar" class="user-avatar">
+                        <span class="user-name" id="userName">John Doe</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    
+                    <div class="user-menu-dropdown" id="userMenuDropdown">
+                        <a href="#" onclick="showSection('profile')" class="dropdown-item">
+                            <i class="fas fa-user"></i>
+                            <span>Profile</span>
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-question-circle"></i>
+                            <span>Help</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" onclick="logout()" class="dropdown-item">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logout</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content Area -->
+        <div class="content-area">
+            <!-- Overview Section -->
+            <section id="overview-section" class="content-section active">
+                <!-- KPI Cards -->
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <div class="kpi-icon risk">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="kpi-info">
+                                <h3>Phishing Risk Score</h3>
+                                <div class="kpi-value">68<span class="kpi-unit">%</span></div>
+                            </div>
+                        </div>
+                        <div class="kpi-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill risk" style="width: 68%"></div>
+                            </div>
+                            <span class="progress-status risk">Medium Risk</span>
+                        </div>
+                    </div>
+                    
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <div class="kpi-icon info">
+                                <i class="fas fa-envelope-open"></i>
+                            </div>
+                            <div class="kpi-info">
+                                <h3>Average Open Rate</h3>
+                                <div class="kpi-value">24<span class="kpi-unit">%</span></div>
+                            </div>
+                        </div>
+                        <div class="kpi-trend">
+                            <i class="fas fa-arrow-down trend-down"></i>
+                            <span class="trend-text">8% from last month</span>
+                        </div>
+                    </div>
+                    
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <div class="kpi-icon danger">
+                                <i class="fas fa-mouse-pointer"></i>
+                            </div>
+                            <div class="kpi-info">
+                                <h3>Click Rate</h3>
+                                <div class="kpi-value">12<span class="kpi-unit">%</span></div>
+                            </div>
+                        </div>
+                        <div class="kpi-trend">
+                            <i class="fas fa-arrow-up trend-up"></i>
+                            <span class="trend-text">3% from last month</span>
+                        </div>
+                    </div>
+                    
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <div class="kpi-icon warning">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <div class="kpi-info">
+                                <h3>Data Submissions</h3>
+                                <div class="kpi-value">5<span class="kpi-unit">%</span></div>
+                            </div>
+                        </div>
+                        <div class="kpi-trend">
+                            <i class="fas fa-arrow-down trend-down"></i>
+                            <span class="trend-text">2% from last month</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Section -->
+                <div class="charts-section">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Campaign Performance</h3>
+                            <div class="chart-controls">
+                                <select class="chart-filter">
+                                    <option value="6m">Last 6 months</option>
+                                    <option value="3m">Last 3 months</option>
+                                    <option value="1m">Last month</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="campaignChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Vulnerability Breakdown</h3>
+                            <div class="chart-legend">
+                                <div class="legend-item">
+                                    <div class="legend-color low-risk"></div>
+                                    <span>Low Risk</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color medium-risk"></div>
+                                    <span>Medium Risk</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color high-risk"></div>
+                                    <span>High Risk</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="vulnerabilityChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Activity Cards -->
+                <div class="activity-section">
+                    <div class="activity-card">
+                        <div class="activity-header">
+                            <h3>Recent Campaigns</h3>
+                            <a href="#" onclick="showSection('campaigns')" class="view-all-link">View All</a>
+                        </div>
+                        <div class="activity-list">
+                            <div class="activity-item">
+                                <div class="activity-icon active">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <h4>Q4 Security Assessment</h4>
+                                    <p>Launched 2 days ago • 156 recipients</p>
+                                </div>
+                                <div class="activity-status">
+                                    <span class="status-badge active">Active</span>
+                                    <span class="status-metric">28% opened</span>
+                                </div>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-icon completed">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <h4>HR Policy Update Test</h4>
+                                    <p>Completed 1 week ago • 89 recipients</p>
+                                </div>
+                                <div class="activity-status">
+                                    <span class="status-badge completed">Completed</span>
+                                    <span class="status-metric">34% clicked</span>
+                                </div>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-icon completed">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <h4>IT Security Drill</h4>
+                                    <p>Completed 2 weeks ago • 203 recipients</p>
+                                </div>
+                                <div class="activity-status">
+                                    <span class="status-badge completed">Completed</span>
+                                    <span class="status-metric">19% clicked</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-card">
+                        <div class="activity-header">
+                            <h3>Security Recommendations</h3>
+                            <button class="refresh-btn" onclick="refreshRecommendations()">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </div>
+                        <div class="recommendations-list">
+                            <div class="recommendation-item high-priority">
+                                <div class="recommendation-icon">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="recommendation-content">
+                                    <h4>High Risk Department</h4>
+                                    <p>Marketing department shows 45% click rate. Consider additional targeted training sessions.</p>
+                                </div>
+                                <button class="action-btn">Take Action</button>
+                            </div>
+                            
+                            <div class="recommendation-item medium-priority">
+                                <div class="recommendation-icon">
+                                    <i class="fas fa-info-circle"></i>
+                                </div>
+                                <div class="recommendation-content">
+                                    <h4>New Template Available</h4>
+                                    <p>Updated phishing templates based on latest threat intelligence are now available.</p>
+                                </div>
+                                <button class="action-btn">View Templates</button>
+                            </div>
+                            
+                            <div class="recommendation-item low-priority">
+                                <div class="recommendation-icon">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="recommendation-content">
+                                    <h4>Training Progress</h4>
+                                    <p>85% of employees completed security awareness training this month. Great progress!</p>
+                                </div>
+                                <button class="action-btn">View Details</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Employees Section -->
+            <section id="employees-section" class="content-section">
+                <div class="section-header">
+                    <div class="section-title">
+                        <h2>Employee Management</h2>
+                        <p>Manage and track employee security training progress</p>
+                    </div>
+                    <div class="section-actions">
+                        <button class="btn btn-outline" onclick="exportEmployees()">
+                            <i class="fas fa-download"></i>
+                            Export
+                        </button>
+                        <button class="btn btn-primary" onclick="showAddEmployeeModal()">
+                            <i class="fas fa-plus"></i>
+                            Add Employee
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <div class="table-header">
+                        <div class="table-filters">
+                            <select class="filter-select">
+                                <option value="all">All Departments</option>
+                                <option value="it">IT</option>
+                                <option value="marketing">Marketing</option>
+                                <option value="finance">Finance</option>
+                                <option value="hr">HR</option>
+                            </select>
+                            <select class="filter-select">
+                                <option value="all">All Risk Levels</option>
+                                <option value="high">High Risk</option>
+                                <option value="medium">Medium Risk</option>
+                                <option value="low">Low Risk</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="data-table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <input type="checkbox" class="table-checkbox" id="selectAll">
+                                    </th>
+                                    <th>Employee</th>
+                                    <th>Department</th>
+                                    <th>Risk Score</th>
+                                    <th>Training Progress</th>
+                                    <th>Last Activity</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <input type="checkbox" class="table-checkbox">
+                                    </td>
+                                    <td>
+                                        <div class="employee-info">
+                                            <img src="/api/placeholder/40/40" alt="Sarah Wilson" class="employee-avatar">
+                                            <div class="employee-details">
+                                                <div class="employee-name">Sarah Wilson</div>
+                                                <div class="employee-email">sarah.wilson@company.com</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="department-badge marketing">Marketing</span>
+                                    </td>
+                                    <td>
+                                        <div class="risk-score high">
+                                            <span class="risk-value">85</span>
+                                            <span class="risk-label">High</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="progress-container">
+                                            <div class="progress-bar small">
+                                                <div class="progress-fill" style="width: 75%"></div>
+                                            </div>
+                                            <span class="progress-text">75%</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="activity-time">2 days ago</span>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="action-btn-small" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="action-btn-small" title="View Details">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="action-btn-small danger" title="Delete">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                
+                                <tr>
+                                    <td>
+                                        <input type="checkbox" class="table-checkbox">
+                                    </td>
+                                    <td>
+                                        <div class="employee-info">
+                                            <img src="/api/placeholder/40/40" alt="Michael Johnson" class="employee-avatar">
+                                            <div class="employee-details">
+                                                <div class="employee-name">Michael Johnson</div>
+                                                <div class="employee-email">michael.johnson@company.com</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="department-badge it">IT</span>
+                                    </td>
+                                    <td>
+                                        <div class="risk-score low">
+                                            <span class="risk-value">25</span>
+                                            <span class="risk-label">Low</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="progress-container">
+                                            <div class="progress-bar small">
+                                                <div class="progress-fill success" style="width: 100%"></div>
+                                            </div>
+                                            <span class="progress-text">100%</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="activity-time">1 day ago</span>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="action-btn-small" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="action-btn-small" title="View Details">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="action-btn-small danger" title="Delete">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                
+                                <tr>
+                                    <td>
+                                        <input type="checkbox" class="table-checkbox">
+                                    </td>
+                                    <td>
+                                        <div class="employee-info">
+                                            <img src="/api/placeholder/40/40" alt="Emily Davis" class="employee-avatar">
+                                            <div class="employee-details">
+                                                <div class="employee-name">Emily Davis</div>
+                                                <div class="employee-email">emily.davis@company.com</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="department-badge finance">Finance</span>
+                                    </td>
+                                    <td>
+                                        <div class="risk-score medium">
+                                            <span class="risk-value">55</span>
+                                            <span class="risk-label">Medium</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="progress-container">
+                                            <div class="progress-bar small">
+                                                <div class="progress-fill warning" style="width: 60%"></div>
+                                            </div>
+                                            <span class="progress-text">60%</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="activity-time">3 days ago</span>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="action-btn-small" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="action-btn-small" title="View Details">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="action-btn-small danger" title="Delete">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                
+                                <tr>
+                                    <td>
+                                        <input type="checkbox" class="table-checkbox">
+                                    </td>
+                                    <td>
+                                        <div class="employee-info">
+                                            <img src="/api/placeholder/40/40" alt="David Brown" class="employee-avatar">
+                                            <div class="employee-details">
+                                                <div class="employee-name">David Brown</div>
+                                                <div class="employee-email">david.brown@company.com</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="department-badge hr">HR</span>
+                                    </td>
+                                    <td>
+                                        <div class="risk-score medium">
+                                            <span class="risk-value">45</span>
+                                            <span class="risk-label">Medium</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="progress-container">
+                                            <div class="progress-bar small">
+                                                <div class="progress-fill success" style="width: 90%"></div>
+                                            </div>
+                                            <span class="progress-text">90%</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="activity-time">5 days ago</span>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="action-btn-small" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="action-btn-small" title="View Details">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="action-btn-small danger" title="Delete">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="table-pagination">
+                        <div class="pagination-info">
+                            Showing 1-4 of 42 employees
+                        </div>
+                        <div class="pagination-controls">
+                            <button class="pagination-btn" disabled>
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button class="pagination-btn active">1</button>
+                            <button class="pagination-btn">2</button>
+                            <button class="pagination-btn">3</button>
+                            <button class="pagination-btn">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Campaigns Section -->
+            <section id="campaigns-section" class="content-section">
+                <div class="section-header">
+                    <div class="section-title">
+                        <h2>Phishing Campaigns</h2>
+                        <p>Create and manage phishing simulation campaigns</p>
+                    </div>
+                    <div class="section-actions">
+                        <button class="btn btn-outline">
+                            <i class="fas fa-filter"></i>
+                            Filter
+                        </button>
+                        <button class="btn btn-primary" onclick="showCreateCampaignModal()">
+                            <i class="fas fa-plus"></i>
+                            Create Campaign
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="campaigns-grid">
+                    <div class="campaign-card">
+                        <div class="campaign-header">
+                            <div class="campaign-stats">
+                                <div class="stat-item">
+                                    <div class="stat-label">Launch Date</div>
+                                    <div class="stat-value">Nov 28, 2024</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-label">Recipients</div>
+                                    <div class="stat-value">89</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-label">Open Rate</div>
+                                    <div class="stat-value text-info">34%</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-label">Click Rate</div>
+                                    <div class="stat-value text-danger">22%</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="campaign-actions">
+                            <button class="btn btn-outline btn-small">Clone</button>
+                            <button class="btn btn-primary btn-small">View Results</button>
+                        </div>
+                    </div>
+                    
+                    <div class="campaign-card">
+                        <div class="campaign-header">
+                            <div class="campaign-status completed">
+                                <i class="fas fa-check"></i>
+                                <span>Completed</span>
+                            </div>
+                            <div class="campaign-menu">
+                                <button class="menu-trigger">
+                                    <i class="fas fa-ellipsis-h"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="campaign-content">
+                            <h3>IT Security Drill</h3>
+                            <p class="campaign-description">Monthly security drill testing employee awareness of IT support impersonation attacks.</p>
+                            
+                            <div class="campaign-stats">
+                                <div class="stat-item">
+                                    <div class="stat-label">Launch Date</div>
+                                    <div class="stat-value">Nov 10, 2024</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-label">Recipients</div>
+                                    <div class="stat-value">203</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-label">Open Rate</div>
+                                    <div class="stat-value text-info">19%</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-label">Click Rate</div>
+                                    <div class="stat-value text-success">8%</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="campaign-actions">
+                            <button class="btn btn-outline btn-small">Clone</button>
+                            <button class="btn btn-primary btn-small">View Results</button>
+                        </div>
+                    </div>
+                </div>
+           <!-- Campaign Card 1 -->
+<div class="campaign-card">
+  <div class="campaign-header">
+    <div class="campaign-status active">
+      <i class="fas fa-play"></i>
+      <span>Active</span>
+    </div>
+    <div class="campaign-menu">
+      <button class="menu-trigger">
+        <i class="fas fa-ellipsis-h"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="campaign-content">
+    <h3>Q4 Security Assessment</h3>
+    <p class="campaign-description">
+      Comprehensive security awareness test targeting all departments with focus on social engineering tactics.
+    </p>
+
+    <div class="campaign-stats">
+      <div class="stat-item">
+        <div class="stat-label">Launch Date</div>
+        <div class="stat-value">Dec 15, 2024</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Recipients</div>
+        <div class="stat-value">156</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Open Rate</div>
+        <div class="stat-value text-info">28%</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Click Rate</div>
+        <div class="stat-value text-danger">15%</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="campaign-actions">
+    <button class="btn btn-outline btn-small">Pause</button>
+    <button class="btn btn-primary btn-small">View Results</button>
+  </div>
+</div>
+
+<!-- Campaign Card 2 -->
+<div class="campaign-card">
+  <div class="campaign-header">
+    <div class="campaign-status completed">
+      <i class="fas fa-check"></i>
+      <span>Completed</span>
+    </div>
+    <div class="campaign-menu">
+      <button class="menu-trigger">
+        <i class="fas fa-ellipsis-h"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="campaign-content">
+    <h3>HR Policy Update Test</h3>
+    <p class="campaign-description">
+      Test employee response to fake HR policy update notifications and credential harvesting attempts.
+    </p>
+
+    <div class="campaign-stats">
+      <div class="stat-item">
+        <div class="stat-label">Launch Date</div>
+        <div class="stat-value">Nov 10, 2024</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Recipients</div>
+        <div class="stat-value">132</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Open Rate</div>
+        <div class="stat-value text-info">31%</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Click Rate</div>
+        <div class="stat-value text-danger">10%</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="campaign-actions">
+    <button class="btn btn-outline btn-small">Archive</button>
+    <button class="btn btn-primary btn-small">View Report</button>
+  </div>
+</div>
+
+                 
+                            <!-- Templates Section -->
+            <section id="templates-section" class="content-section">
+                <div class="section-header">
+                    <div class="section-title">
+                        <h2>Phishing Templates</h2>
+                        <p>Create and manage phishing email templates for your campaigns</p>
+                    </div>
+                    <div class="section-actions">
+                        <div class="template-categories">
+                            <button class="category-btn active" data-category="all">All</button>
+                            <button class="category-btn" data-category="financial">Financial</button>
+                            <button class="category-btn" data-category="it">IT/Tech</button>
+                            <button class="category-btn" data-category="social">Social</button>
+                            <button class="category-btn" data-category="business">Business</button>
+                        </div>
+                        <button class="btn btn-primary" onclick="showCreateTemplateModal()">
+                            <i class="fas fa-plus"></i>
+                            Create Template
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="templates-grid">
+                    <div class="template-card" data-category="financial">
+                        <div class="template-header">
+                            <div class="template-category financial">Financial</div>
+                            <div class="template-popularity">
+                                <i class="fas fa-fire"></i>
+                                <span>Popular</span>
+                            </div>
+                        </div>
+                        
+                        <div class="template-preview">
+                            <div class="preview-subject">
+                                <strong>Subject:</strong> Urgent: Your account will be suspended
+                            </div>
+                            <div class="preview-content">
+                                <p>Dear Customer, We have detected suspicious activity on your account. Please verify your identity immediately to avoid suspension...</p>
+                            </div>
+                        </div>
+                        
+                        <div class="template-info">
+                            <h3>Banking Security Alert</h3>
+                            <p>Simulates urgent banking security notifications to test user response to financial phishing attempts.</p>
+                            
+                            <div class="template-stats">
+                                <div class="stat-item">
+                                    <span class="stat-label">Success Rate:</span>
+                                    <span class="stat-value">42%</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Used in:</span>
+                                    <span class="stat-value">8 campaigns</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="template-actions">
+                            <button class="btn btn-outline btn-small">
+                                <i class="fas fa-eye"></i>
+                                Preview
+                            </button>
+                            <button class="btn btn-outline btn-small">
+                                <i class="fas fa-edit"></i>
+                                Edit
+                            </button>
+                            <button class="btn btn-primary btn-small">
+                                <i class="fas fa-rocket"></i>
+                                Use Template
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="template-card" data-category="it">
+                        <div class="template-header">
+                            <div class="template-category it">IT/Tech</div>
+                            <div class="template-effectiveness high">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>High Success</span>
+                            </div>
+                        </div>
+                        
+                        <div class="template-preview">
+                            <div class="preview-subject">
+                                <strong>Subject:</strong> Office 365 Sign-in Required
+                            </div>
+                            <div class="preview-content">
+                                <p>Your Office 365 session has expired. Please sign in again to continue accessing your emails and documents...</p>
+                            </div>
+                        </div>
+                        
+                        <div class="template-info">
+                            <h3>Office 365 Login</h3>
+                            <p>Mimics Office 365 login prompts to test credential harvesting awareness among employees.</p>
+                            
+                            <div class="template-stats">
+                                <div class="stat-item">
+                                    <span class="stat-label">Success Rate:</span>
+                                    <span class="stat-value">38%</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Used in:</span>
+                                    <span class="stat-value">12 campaigns</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="template-actions">
+                            <button class="btn btn-outline btn-small">
+                                <i class="fas fa-eye"></i>
+                                Preview
+                            </button>
+                            <button class="btn btn-outline btn-small">
+                                <i class="fas fa-edit"></i>
+                                Edit
+                            </button>
+                            <button class="btn btn-primary btn-small">
+                                <i class="fas fa-rocket"></i>
+                                Use Template
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="template-card" data-category="it">
+                        <div class="template-header">
+                            <div class="template-category it">IT/Tech</div>
+                            <div class="template-status new">
+                                <i class="fas fa-star"></i>
+                                <span>New</span>
+                            </div>
+                        </div>
+                        
+                        <div class="template-preview">
+                            <div class="preview-subject">
+                                <strong>Subject:</strong> IT Support: Password Reset Required
+                            </div>
+                            <div class="preview-content">
+                                <p>Hello, This is IT Support. We need you to reset your password immediately due to a security update. Click here to proceed...</p>
+                            </div>
+                        </div>
+                        
+                        <div class="template-info">
+                            <h3>IT Support Request</h3>
+                            <p>Simulates internal IT support requests to test employees' verification procedures.</p>
+                            
+                            <div class="template-stats">
+                                <div class="stat-item">
+                                    <span class="stat-label">Success Rate:</span>
+                                    <span class="stat-value">--</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Used in:</span>
+                                    <span class="stat-value">0 campaigns</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="template-actions">
+                            <button class="btn btn-outline btn-small">
+                                <i class="fas fa-eye"></i>
+                                Preview
+                            </button>
+                            <button class="btn btn-outline btn-small">
+                                <i class="fas fa-edit"></i>
+                                Edit
+                            </button>
+                            <button class="btn btn-primary btn-small">
+                                <i class="fas fa-rocket"></i>
+                                Use Template
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="template-card" data-category="social">
+                        <div class="template-header">
+                            <div class="template-category social">Social</div>
+                            <div class="template-effectiveness medium">
+                                <i class="fas fa-minus"></i>
+                                <span>Medium Success</span>
+                            </div>
+                        </div>
+                        
+                        <div class="template-preview">
+                            <div class="preview-subject">
+                                <strong>Subject:</strong> Package Delivery Notification
+                            </div>
+                            <div class="preview-content">
+                                <p>Dear Customer, We attempted to deliver your package but no one was available. Please click here to reschedule your delivery...</p>
+                            </div>
+                        </div>
+                        
+                        <div class="template-info">
+                            <h3>Package Delivery</h3>
+                            <p>Mimics package delivery notifications to test social engineering awareness.</p>
+                            
+                            <div class="template-stats">
+                                <div class="stat-item">
+                                    <span class="stat-label">Success Rate:</span>
+                                    <span class="stat-value">29%</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Used in:</span>
+                                    <span class="stat-value">5 campaigns</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="template-actions">
+                            <button class="btn btn-outline btn-small">
+                                <i class="fas fa-eye"></i>
+                                Preview
+                            </button>
+                            <button class="btn btn-outline btn-small">
+                                <i class="fas fa-edit"></i>
+                                Edit
+                            </button>
+                            <button class="btn btn-primary btn-small">
+                                <i class="fas fa-rocket"></i>
+                                Use Template
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="template-card" data-category="social">
+                        <div class="template-header">
+                            <div class="template-category social">Social</div>
+                            <div class="template-popularity">
+                                <i class="fas fa-thumbs-up"></i>
+                                <span>Trending</span>
+                            </div>
+                        </div>
+                        
+                        <div class="template-preview">
+                            <div class="preview-subject">
+                                <strong>Subject:</strong> LinkedIn: You have a new connection request
+                            </div>
+                            <div class="preview-content">
+                                <p>Hi there, John Smith wants to connect with you on LinkedIn. View their profile and respond to their connection request...</p>
+                            </div>
+                        </div>
+                        
+                        <div class="template-info">
+                            <h3>LinkedIn Connection</h3>
+                            <p>Tests social media-based phishing attempts through professional networking scenarios.</p>
+                            
+                            <div class="template-stats">
+                                <div class="stat-item">
+                                    <span class="stat-label">Success Rate:</span>
+                                    <span class="stat-value">35%</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Used in:</span>
+                                    <span class="stat-value">6 campaigns</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="template-actions">
+                            <button class="btn btn-outline btn-small">
+                                <i class="fas fa-eye"></i>
+                                Preview
+                            </button>
+                            <button class="btn btn-outline btn-small">
+                                <i class="fas fa-edit"></i>
+                                Edit
+                            </button>
+                            <button class="btn btn-primary btn-small">
+                                <i class="fas fa-rocket"></i>
+                                Use Template
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="template-card" data-category="business">
+                        <div class="template-header">
+                            <div class="template-category business">Business</div>
+                            <div class="template-effectiveness high">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <span>High Impact</span>
+                            </div>
+                        </div>
+                        
+                        <div class="template-preview">
+                            <div class="preview-subject">
+                                <strong>Subject:</strong> URGENT: CEO Request - Confidential
+                            </div>
+                            <div class="preview-content">
+                                <p>This is urgent and confidential. I need you to process a wire transfer immediately. Please call me to discuss the details...</p>
+                            </div>
+                        </div>
+                        
+                        <div class="template-info">
+                            <h3>CEO Urgent Request</h3>
+                            <p>Simulates business email compromise scenarios from executive leadership.</p>
+                            
+                            <div class="template-stats">
+                                <div class="stat-item">
+                                    <span class="stat-label">Success Rate:</span>
+                                    <span class="stat-value">51%</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Used in:</span>
+                                    <span class="stat-value">4 campaigns</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="template-actions">
+                            <button class="btn btn-outline btn-small">
+                                <i class="fas fa-eye"></i>
+                                Preview
+                            </button>
+                            <button class="btn btn-outline btn-small">
+                                <i class="fas fa-edit"></i>
+                                Edit
+                            </button>
+                            <button class="btn btn-primary btn-small">
+                                <i class="fas fa-rocket"></i>
+                                Use Template
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Profile Section -->
+            <section id="profile-section" class="content-section">
+                <div class="profile-container">
+                    <div class="profile-sidebar">
+                        <div class="profile-card">
+                            <div class="profile-avatar-section">
+                                <img src="/api/placeholder/120/120" alt="Profile Avatar" class="profile-avatar">
+                                <button class="avatar-upload-btn">
+                                    <i class="fas fa-camera"></i>
+                                </button>
+                            </div>
+                            <div class="profile-info">
+                                <h3 class="profile-name" id="profileName">John Doe</h3>
+                                <p class="profile-role">Security Administrator</p>
+                                <p class="profile-company">TechCorp Industries</p>
+                            </div>
+                            <div class="profile-stats">
+                                <div class="stat-item">
+                                    <div class="stat-value">156</div>
+                                    <div class="stat-label">Employees Managed</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">12</div>
+                                    <div class="stat-label">Active Campaigns</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">98%</div>
+                                    <div class="stat-label">Success Rate</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="profile-menu">
+                            <button class="profile-menu-item active" data-tab="personal">
+                                <i class="fas fa-user"></i>
+                                <span>Personal Information</span>
+                            </button>
+                            <button class="profile-menu-item" data-tab="security">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>Security Settings</span>
+                            </button>
+                            <button class="profile-menu-item" data-tab="billing">
+                                <i class="fas fa-credit-card"></i>
+                                <span>Billing & Plans</span>
+                            </button>
+                            <button class="profile-menu-item" data-tab="notifications">
+                                <i class="fas fa-bell"></i>
+                                <span>Notifications</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-content">
+                        <!-- Personal Information Tab -->
+                        <div class="profile-tab active" id="personal-tab">
+                            <div class="tab-header">
+                                <h2>Personal Information</h2>
+                                <p>Update your personal details and contact information</p>
+                            </div>
+                            
+                            <form class="profile-form">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">First Name</label>
+                                        <input type="text" class="form-input" value="John" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Last Name</label>
+                                        <input type="text" class="form-input" value="Doe" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Email Address</label>
+                                    <input type="email" class="form-input" value="john.doe@company.com" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Phone Number</label>
+                                    <input type="tel" class="form-input" value="+1 (555) 123-4567">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Company</label>
+                                    <input type="text" class="form-input" value="TechCorp Industries" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Job Title</label>
+                                    <input type="text" class="form-input" value="Security Administrator">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Time Zone</label>
+                                    <select class="form-input">
+                                        <option value="UTC-8">Pacific Time (UTC-8)</option>
+                                        <option value="UTC-7">Mountain Time (UTC-7)</option>
+                                        <option value="UTC-6">Central Time (UTC-6)</option>
+                                        <option value="UTC-5" selected>Eastern Time (UTC-5)</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-actions">
+                                    <button type="button" class="btn btn-outline">Cancel</button>
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <!-- Security Settings Tab -->
+                        <div class="profile-tab" id="security-tab">
+                            <div class="tab-header">
+                                <h2>Security Settings</h2>
+                                <p>Manage your account security and authentication preferences</p>
+                            </div>
+                            
+                            <div class="security-section">
+                                <h3>Change Password</h3>
+                                <form class="security-form">
+                                    <div class="form-group">
+                                        <label class="form-label">Current Password</label>
+                                        <input type="password" class="form-input" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">New Password</label>
+                                        <input type="password" class="form-input" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Confirm New Password</label>
+                                        <input type="password" class="form-input" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Update Password</button>
+                                </form>
+                            </div>
+                            
+                            <div class="security-section">
+                                <h3>Two-Factor Authentication</h3>
+                                <div class="security-option">
+                                    <div class="option-info">
+                                        <h4>SMS Authentication</h4>
+                                        <p>Receive verification codes via SMS</p>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                                <div class="security-option">
+                                    <div class="option-info">
+                                        <h4>Authenticator App</h4>
+                                        <p>Use an authenticator app for verification</p>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="security-section">
+                                <h3>Login Sessions</h3>
+                                <div class="session-list">
+                                    <div class="session-item">
+                                        <div class="session-info">
+                                            <div class="session-device">
+                                                <i class="fas fa-desktop"></i>
+                                                <span>Chrome on Windows</span>
+                                            </div>
+                                            <div class="session-details">
+                                                <span>New York, NY • Current session</span>
+                                            </div>
+                                        </div>
+                                        <span class="session-status current">Current</span>
+                                    </div>
+                                    <div class="session-item">
+                                        <div class="session-info">
+                                            <div class="session-device">
+                                                <i class="fas fa-mobile-alt"></i>
+                                                <span>Safari on iPhone</span>
+                                            </div>
+                                            <div class="session-details">
+                                                <span>New York, NY • 2 hours ago</span>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-outline btn-small">Revoke</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Billing Tab -->
+                        <div class="profile-tab" id="billing-tab">
+                            <div class="tab-header">
+                                <h2>Billing & Plans</h2>
+                                <p>Manage your subscription and billing information</p>
+                            </div>
+                            
+                            <div class="billing-section">
+                                <div class="current-plan">
+                                    <div class="plan-info">
+                                        <h3>Professional Plan</h3>
+                                        <p class="plan-price">$19 <span>/user/month</span></p>
+                                        <p class="plan-billing">Next billing: January 15, 2025</p>
+                                    </div>
+                                    <button class="btn btn-outline">Change Plan</button>
+                                </div>
+                                
+                                <div class="payment-method">
+                                    <h3>Payment Method</h3>
+                                    <div class="payment-card">
+                                        <div class="card-info">
+                                            <i class="fab fa-cc-visa"></i>
+                                            <span>•••• •••• •••• 4242</span>
+                                            <span class="card-expiry">Expires 12/2025</span>
+                                        </div>
+                                        <button class="btn btn-outline btn-small">Update</button>
+                                    </div>
+                                </div>
+                                
+                                <div class="billing-history">
+                                    <h3>Billing History</h3>
+                                    <div class="invoice-list">
+                                        <div class="invoice-item">
+                                            <div class="invoice-info">
+                                                <span class="invoice-date">Dec 15, 2024</span>
+                                                <span class="invoice-amount">$2,964.00</span>
+                                            </div>
+                                            <button class="btn btn-outline btn-small">
+                                                <i class="fas fa-download"></i>
+                                                Download
+                                            </button>
+                                        </div>
+                                        <div class="invoice-item">
+                                            <div class="invoice-info">
+                                                <span class="invoice-date">Nov 15, 2024</span>
+                                                <span class="invoice-amount">$2,964.00</span>
+                                            </div>
+                                            <button class="btn btn-outline btn-small">
+                                                <i class="fas fa-download"></i>
+                                                Download
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+<!-- Notifications Tab -->
+<div class="profile-tab" id="notifications-tab">
+    <div class="tab-header">
+      <h2>Notification Settings</h2>
+      <p>Choose how you want to be notified about important events</p>
+    </div>
+  
+    <div class="notifications-section">
+      <!-- Campaign Notifications -->
+      <div class="notification-group">
+        <h3>Campaign Notifications</h3>
+  
+        <div class="notification-option">
+          <div class="option-info">
+            <h4>Campaign Launch</h4>
+            <p>Get notified when campaigns are launched</p>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+  
+        <div class="notification-option">
+          <div class="option-info">
+            <h4>System Updates</h4>
+            <p>Get notified about system updates and maintenance</p>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox">
+            <span class="slider"></span>
+          </label>
+        </div>
+  
+        <div class="notification-option">
+          <div class="option-info">
+            <h4>Campaign Completion</h4>
+            <p>Get notified when campaigns are completed</p>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+  
+      <!-- Reporting -->
+      <div class="notification-group">
+        <h3>Reporting</h3>
+  
+        <div class="notification-option">
+          <div class="option-info">
+            <h4>Weekly Reports</h4>
+            <p>Receive weekly security reports via email</p>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox">
+            <span class="slider"></span>
+          </label>
+        </div>
+  
+        <div class="notification-option">
+          <div class="option-info">
+            <h4>Monthly Summary</h4>
+            <p>Receive monthly security summary reports</p>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+  
+      <!-- Security Alerts -->
+      <div class="notification-group">
+        <h3>Security Alerts</h3>
+  
+        <div class="notification-option">
+          <div class="option-info">
+            <h4>High Risk Employees</h4>
+            <p>Get alerted about employees with high risk scores</p>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" checked>
+            <span class="slider round"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+    <!-- Add Employee Modal -->
+    <div id="add-employee-modal" class="modal">
+        <div class="modal-backdrop" onclick="hideModal('add-employee-modal')"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Employee</h3>
+                <button class="modal-close" onclick="hideModal('add-employee-modal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">First Name</label>
+                            <input type="text" class="form-input" name="firstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Last Name</label>
+                            <input type="text" class="form-input" name="lastName" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-input" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Department</label>
+                        <select class="form-input" name="department">
+                            <option value="">Select Department</option>
+                            <option value="it">IT</option>
+                            <option value="marketing">Marketing</option>
+                            <option value="finance">Finance</option>
+                            <option value="hr">HR</option>
+                            <option value="sales">Sales</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Job Title</label>
+                        <input type="text" class="form-input" name="jobTitle">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline" onclick="hideModal('add-employee-modal')">Cancel</button>
+                <button type="submit" class="btn btn-primary" onclick="handleAddEmployee(event)">Add Employee</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Campaign Modal -->
+    <div id="create-campaign-modal" class="modal">
+        <div class="modal-backdrop" onclick="hideModal('create-campaign-modal')"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create New Campaign</h3>
+                <button class="modal-close" onclick="hideModal('create-campaign-modal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label class="form-label">Campaign Name</label>
+                        <input type="text" class="form-input" name="campaignName" placeholder="Enter campaign name" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-input" name="description" rows="3" placeholder="Describe your campaign objectives"></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Launch Date</label>
+                            <input type="datetime-local" class="form-input" name="launchDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Template</label>
+                            <select class="form-input" name="template" required>
+                                <option value="">Select Template</option>
+                                <option value="banking">Banking Security Alert</option>
+                                <option value="office365">Office 365 Login</option>
+                                <option value="it-support">IT Support Request</option>
+                                <option value="package">Package Delivery</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Target Audience</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-container">
+                                <input type="checkbox" name="targetAudience" value="all" checked>
+                                <span class="checkmark"></span>
+                                <span class="checkbox-label">All Employees</span>
+                            </label>
+                            <label class="checkbox-container">
+                                <input type="checkbox" name="targetAudience" value="it">
+                                <span class="checkmark"></span>
+                                <span class="checkbox-label">IT Department</span>
+                            </label>
+                            <label class="checkbox-container">
+                                <input type="checkbox" name="targetAudience" value="marketing">
+                                <span class="checkmark"></span>
+                                <span class="checkbox-label">Marketing Department</span>
+                            </label>
+                            <label class="checkbox-container">
+                                <input type="checkbox" name="targetAudience" value="finance">
+                                <span class="checkmark"></span>
+                                <span class="checkbox-label">Finance Department</span>
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline" onclick="hideModal('create-campaign-modal')">Cancel</button>
+                <button type="submit" class="btn btn-primary" onclick="handleCreateCampaign(event)">Create Campaign</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Template Modal -->
+    <div id="create-template-modal" class="modal">
+        <div class="modal-backdrop" onclick="hideModal('create-template-modal')"></div>
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3>Create New Template</h3>
+                <button class="modal-close" onclick="hideModal('create-template-modal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Template Name</label>
+                            <input type="text" class="form-input" name="templateName" placeholder="Enter template name" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Category</label>
+                            <select class="form-input" name="category" required>
+                                <option value="">Select Category</option>
+                                <option value="financial">Financial</option>
+                                <option value="it">IT/Tech</option>
+                                <option value="social">Social Engineering</option>
+                                <option value="business">Business Email</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email Subject</label>
+                        <input type="text" class="form-input" name="subject" placeholder="Enter email subject line" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Sender Name</label>
+                        <input type="text" class="form-input" name="sender" placeholder="Enter sender name">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email Content</label>
+                        <textarea class="form-input" name="content" rows="8" placeholder="Enter the email content..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Landing Page URL</label>
+                        <input type="url" class="form-input" name="landingPage" placeholder="https://example.com/phishing-page">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline" onclick="hideModal('create-template-modal')">Cancel</button>
+                <button type="submit" class="btn btn-primary" onclick="handleCreateTemplate(event)">Create Template</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <div class="toast-content">
+            <div class="toast-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="toast-message">
+                <div class="toast-title">Success!</div>
+                <div class="toast-description">Operation completed successfully.</div>
+            </div>
+        </div>
+        <button class="toast-close" onclick="hideToast()">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>

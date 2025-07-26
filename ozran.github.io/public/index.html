@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Ozran Secure Shield - Advanced Cybersecurity Training & Phishing Simulation Platform</title>
+        
+        <!-- SEO Meta Tags -->
+        <meta name="description" content="Protect your organization with Ozran Secure Shield's advanced phishing simulation and cybersecurity training platform. Trusted by 5,000+ companies worldwide with 98% threat detection rate.">
+        <meta name="keywords" content="phishing simulation, cybersecurity training, security awareness training, employee security training, cyber threat protection, phishing test, security platform">
+        <meta name="author" content="Ozran Secure Shield">
+        <meta name="robots" content="index, follow">
+        <link rel="canonical" href="https://ozran.net/">
+        
+        <!-- Open Graph Meta Tags -->
+        <meta property="og:title" content="Ozran Secure Shield - Advanced Cybersecurity Training Platform">
+        <meta property="og:description" content="AI-powered phishing simulation and security awareness training platform trusted by 5,000+ companies worldwide.">
+        <meta property="og:image" content="https://ozran.net/assets/og-image-home.jpg">
+        <meta property="og:url" content="https://ozran.net/">
+        <meta property="og:type" content="website">
+        <meta property="og:site_name" content="Ozran Secure Shield">
+        
+        <!-- Twitter Card Meta Tags -->
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="Ozran Secure Shield - Advanced Cybersecurity Training">
+        <meta name="twitter:description" content="Protect your company from cyber threats with comprehensive phishing simulation and security awareness training.">
+        <meta name="twitter:image" content="https://ozran.net/assets/twitter-card-home.jpg">
+        
+        <!-- Favicon and Icons -->
+        <link rel="icon" type="image/x-icon" href="/favicon.ico">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+        <link rel="manifest" href="/manifest.json">
+        
+        <!-- Your existing CSS links stay here -->
+        <link rel="stylesheet" href="index.css">
+        <!-- ... rest of your existing head content -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ozran Secure Shield - Protect Your Company from Cyber Threats</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-container">
+                <div class="logo">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Ozran Secure Shield</span>
+                </div>
+                <nav class="nav">
+                    <ul>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
+                        <li><a href="#testimonials">Testimonials</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </nav>
+                <div class="header-actions">
+                    <button class="btn btn-primary" onclick="window.location.href='auth.html'">Login</button>
+                    <button class="mobile-menu-btn" id="mobileMenuBtn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation Overlay -->
+    <div class="mobile-nav" id="mobileNav">
+        <div class="mobile-nav-header">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <span>Ozran Secure Shield</span>
+            </div>
+            <button class="mobile-nav-close" id="mobileNavClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <ul class="mobile-nav-links">
+            <li><a href="#features" onclick="closeMobileNav()">Features</a></li>
+            <li><a href="#pricing" onclick="closeMobileNav()">Pricing</a></li>
+            <li><a href="#testimonials" onclick="closeMobileNav()">Testimonials</a></li>
+            <li><a href="#contact" onclick="closeMobileNav()">Contact</a></li>
+        </ul>
+        <div class="mobile-nav-cta">
+            <button class="btn btn-primary" onclick="window.location.href='auth.html'">Get Started</button>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-background"></div>
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="hero-title">
+                        Protect Your Company from 
+                        <span class="gradient-text">Cyber Threats</span>
+                    </h1>
+                    <p class="hero-description">
+                        Advanced phishing simulation and security awareness training platform that strengthens your organization's human firewall with AI-powered insights and comprehensive analytics.
+                    </p>
+                    <div class="hero-cta">
+                        <button class="btn btn-primary-large" onclick="window.location.href='auth.html'">
+                            <i class="fas fa-rocket"></i>
+                            Run a Free Phishing Test
+                        </button>
+                        <button class="btn btn-secondary-large" onclick="window.location.href='auth.html'">
+                            <i class="fas fa-play"></i>
+                            Get Started
+                        </button>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">5,000+</div>
+                            <div class="stat-label">Companies Protected</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">98%</div>
+                            <div class="stat-label">Detection Rate</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">24/7</div>
+                            <div class="stat-label">Monitoring</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="dashboard-preview">
+                        <div class="dashboard-header">
+                            <div class="dashboard-title">Security Dashboard</div>
+                            <div class="status-indicator">
+                                <div class="status-dot"></div>
+                                <span>Live</span>
+                            </div>
+                        </div>
+                        <div class="dashboard-content">
+                            <div class="metric-card">
+                                <div class="metric-header">
+                                    <span>Phishing Risk</span>
+                                    <span class="metric-status low">Low</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 25%"></div>
+                                </div>
+                            </div>
+                            <div class="metric-grid">
+                                <div class="metric-small">
+                                    <div class="metric-value">98%</div>
+                                    <div class="metric-name">Detection</div>
+                                </div>
+                                <div class="metric-small">
+                                    <div class="metric-value">156</div>
+                                    <div class="metric-name">Employees</div>
+                                </div>
+                            </div>
+                            <div class="chart-placeholder">
+                                <div class="chart-bars">
+                                    <div class="chart-bar" style="height: 60%"></div>
+                                    <div class="chart-bar" style="height: 40%"></div>
+                                    <div class="chart-bar" style="height: 80%"></div>
+                                    <div class="chart-bar" style="height: 35%"></div>
+                                    <div class="chart-bar" style="height: 65%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Comprehensive Security Features</h2>
+                <p>Everything you need to build a security-aware organization with cutting-edge technology and proven methodologies.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-fish"></i>
+                    </div>
+                    <h3>Advanced Phishing Simulations</h3>
+                    <p>Create sophisticated, targeted phishing campaigns that mimic real-world threats to test and train your employees' security awareness.</p>
+                    <div class="feature-highlight">
+                        <i class="fas fa-check"></i>
+                        <span>AI-powered threat intelligence</span>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3>Security Awareness Training</h3>
+                    <p>Interactive courses and micro-learning modules designed to educate employees on cybersecurity best practices and emerging threats.</p>
+                    <div class="feature-highlight">
+                        <i class="fas fa-check"></i>
+                        <span>Personalized learning paths</span>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Real-time Analytics</h3>
+                    <p>Comprehensive dashboards and reporting tools to track progress, identify vulnerabilities, and measure security program effectiveness.</p>
+                    <div class="feature-highlight">
+                        <i class="fas fa-check"></i>
+                        <span>Executive reporting suite</span>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Threat Intelligence</h3>
+                    <p>Stay ahead of emerging threats with our continuously updated threat intelligence database and automated security updates.</p>
+                    <div class="feature-highlight">
+                        <i class="fas fa-check"></i>
+                        <span>Global threat network</span>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Employee Management</h3>
+                    <p>Organize and track employee security training progress across departments, roles, and skill levels with granular control.</p>
+                    <div class="feature-highlight">
+                        <i class="fas fa-check"></i>
+                        <span>Bulk import & automation</span>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-cog"></i>
+                    </div>
+                    <h3>Custom Templates</h3>
+                    <p>Create and customize phishing templates tailored to your industry, organization, and specific security requirements.</p>
+                    <div class="feature-highlight">
+                        <i class="fas fa-check"></i>
+                        <span>Industry-specific content</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="pricing">
+        <div class="container">
+            <div class="section-header">
+                <h2>Choose Your Security Plan</h2>
+                <p>Flexible pricing designed for organizations of all sizes, from startups to enterprise-level security programs.</p>
+            </div>
+            
+            <div class="pricing-toggle">
+                <span class="toggle-label">Monthly</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="pricingToggle">
+                    <span class="slider"></span>
+                </label>
+                <span class="toggle-label">Annual <small>(Save 20%)</small></span>
+            </div>
+            
+            <div class="pricing-cards">
+                <!-- Starter Plan -->
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Starter</h3>
+                        <div class="pricing-amount">
+                            <span class="price" data-monthly="9" data-annual="7">$9</span>
+                            <span class="period">/user/month</span>
+                        </div>
+                        <p class="pricing-description">Perfect for small teams getting started with security awareness</p>
+                    </div>
+                    <div class="pricing-features">
+                        <div class="feature-item">
+                            <i class="fas fa-check"></i>
+                            <span>Basic phishing simulations</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check"></i>
+                            <span>Core training modules</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check"></i>
+                            <span>Basic reporting dashboard</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check"></i>
+                            <span>Email support</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check"></i>
+                            <span>Up to 50 employees</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-outline" onclick="window.location.href='auth.html'">Get Started</button>
+                </div>
+                
+                <!-- Professional Plan -->
+                <div class="pricing-card popular">
+                    <div class="popular-badge">Most Popular</div>
+                    <div class="pricing-header">
+                        <h3>Professional</h3>
+                        <div class="pricing-amount">
+                            <span class="price" data-monthly="19" data-annual="15">$19</span>
+                            <span class="period">/user/month</span>
+                        </div>
+                        <p class="pricing-description">Comprehensive security training for growing businesses</p>
+                    </div>
+                    <div class="pricing-features">
+                        <div class="feature-item">
+                            <i class="fas fa-check"></i>
+                            <span>Advanced phishing campaigns</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check"></i>
+                            <span>Complete training library</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check"></i>
+                            <span>Advanced analytics & reporting</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check"></i>
+                            <span>Priority support</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check"></i>
+                            <span>Custom templates</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check"></i>
+                            <span>SSO integration</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check"></i>
+                            <span>Unlimited employees</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="window.location.href='auth.html'">Get Started</button>
+                </div>
+                
+                <!-- Enterprise Plan -->
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Enterprise</h3>
+                        <div class="pricing-amount">
+                            <span class="price" data-monthly="39" data-annual="31">$39</span>
+                            <span class="period">/user/month</span>
+                        </div>
+                        <p class="pricing-description">Enterprise-grade security for large organizations</p>
+                    </div>
+                    <div class="pricing-features">
+                        <div class="feature-item">
+                            <i class="fas fa-check"></i>
+                            <span>Everything in Professional</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check"></i>
+                            <span>Custom integrations</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check"></i>
+                            <span>Dedicated account manager</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check"></i>
+                            <span>White-label options</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check"></i>
+                            <span>Advanced compliance reporting</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check"></i>
+                            <span>API access</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check"></i>
+                            <span>24/7 phone support</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-outline" onclick="window.location.href='auth.html'">Contact Sales</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h2>Trusted by Security Leaders Worldwide</h2>
+                <p>See how organizations across industries strengthen their security posture with Ozran Secure Shield.</p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <div class="quote-icon">
+                            <i class="fas fa-quote-left"></i>
+                        </div>
+                        <p>"Ozran transformed our security culture completely. Our phishing susceptibility dropped by 85% in just 6 months, and employee engagement with security training increased dramatically."</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <img src="/api/placeholder/60/60" alt="Sarah Johnson" class="author-avatar">
+                        <div class="author-info">
+                            <div class="author-name">Sarah Johnson</div>
+                            <div class="author-title">CISO, TechCorp Industries</div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <div class="quote-icon">
+                            <i class="fas fa-quote-left"></i>
+                        </div>
+                        <p>"The analytics and reporting features give us incredible insights into our security posture. The executive dashboards make it easy to communicate security metrics to leadership."</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <img src="/api/placeholder/60/60" alt="Michael Chen" class="author-avatar">
+                        <div class="author-info">
+                            <div class="author-name">Michael Chen</div>
+                            <div class="author-title">IT Director, Finance Plus</div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <div class="quote-icon">
+                            <i class="fas fa-quote-left"></i>
+                        </div>
+                        <p>"Easy to deploy and manage across our global workforce. Our employees love the interactive training modules, and we've seen measurable improvements in security awareness."</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <img src="/api/placeholder/60/60" alt="Lisa Rodriguez" class="author-avatar">
+                        <div class="author-info">
+                            <div class="author-name">Lisa Rodriguez</div>
+                            <div class="author-title">Security Manager, HealthCare Inc</div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Strengthen Your Security?</h2>
+                <p>Join thousands of organizations worldwide who trust Ozran Secure Shield to protect their most valuable assets. Start your free trial today and see the difference in just 30 days.</p>
+                <div class="cta-actions">
+                    <button class="btn btn-primary-large" onclick="window.location.href='auth.html'">
+                        <i class="fas fa-rocket"></i>
+                        Start Free Trial
+                    </button>
+                    <button class="btn btn-secondary-large" onclick="window.location.href='auth.html'">
+                        <i class="fas fa-calendar"></i>
+                        Schedule Demo
+                    </button>
+                </div>
+                <div class="cta-features">
+                    <div class="cta-feature">
+                        <i class="fas fa-check"></i>
+                        <span>30-day free trial</span>
+                    </div>
+                    <div class="cta-feature">
+                        <i class="fas fa-check"></i>
+                        <span>No credit card required</span>
+                    </div>
+                    <div class="cta-feature">
+                        <i class="fas fa-check"></i>
+                        <span>Full feature access</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-brand">
+                        <div class="logo">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>Ozran Secure Shield</span>
+                        </div>
+                        <p>Protecting organizations worldwide with advanced cybersecurity training, phishing simulation, and comprehensive security awareness programs.</p>
+                        <div class="social-links">
+                            <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Product</h4>
+                    <ul class="footer-links">
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
+                        <li><a href="#">Security</a></li>
+                        <li><a href="#">Integrations</a></li>
+                        <li><a href="#">API Documentation</a></li>
+                        <li><a href="#">Roadmap</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Solutions</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Enterprise</a></li>
+                        <li><a href="#">Small Business</a></li>
+                        <li><a href="#">Healthcare</a></li>
+                        <li><a href="#">Financial Services</a></li>
+                        <li><a href="#">Government</a></li>
+                        <li><a href="#">Education</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Case Studies</a></li>
+                        <li><a href="#">Security Center</a></li>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Webinars</a></li>
+                        <li><a href="#">Training</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Press</a></li>
+                        <li><a href="#">Partners</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Events</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul class="footer-links">
+                        <li><a href="terms.html">Terms of Service</a></li>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                        <li><a href="#">GDPR</a></li>
+                        <li><a href="#">Compliance</a></li>
+                        <li><a href="#">Security Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <p>&copy; 2024 Ozran Secure Shield. All rights reserved.</p>
+                    <div class="footer-bottom-links">
+                        <a href="terms.html">Terms</a>
+                        <a href="privacy.html">Privacy</a>
+                        <a href="#contact">Contact</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
