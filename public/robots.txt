@@ -1,0 +1,20 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard.html
+Disallow: /admin/
+Disallow: /api/
+Disallow: /*.json$
+Disallow: /sw.js
+
+# Allow specific search engines
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Sitemap location
+Sitemap: https://ozran.net/sitemap.xml
+
+# Crawl delay
+Crawl-delay: 1
