@@ -5,14 +5,24 @@ const cors = require("cors");
 const nodemailer = require("nodemailer");
 const path = require("path");
 const { createClient } = require("@supabase/supabase-js");
+const rateLimit = require("express-rate-limit");
 require("dotenv").config();
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({ origin: true, credentials: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
-const SECRET_KEY = process.env.JWT_SECRET || "supersecretkey";
+if (!process.env.JWT_SECRET) {
+  throw new Error("JWT_SECRET environment variable is required");
+}
+const SECRET_KEY = process.env.JWT_SECRET;
+
+// ✅ Rate Limiter
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100,
+});
 
 // ✅ Supabase Setup
 const supabase = createClient(
@@ -26,6 +36,23 @@ app.post("/register", async (req, res) => {
 
   if (!username || !email || !password) {
     return res.status(400).json({ error: "All fields are required" });
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    return res.status(400).json({ error: "Invalid email format" });
+  }
+
+  if (password.length < 8) {
+    return res.status(400).json({ error: "Password must be at least 8 characters long" });
+  }
+
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])/;
+  if (!passwordRegex.test(password)) {
+    return res.status(400).json({
+      error:
+        "Password must include uppercase, lowercase, number, and special character",
+    });
   }
 
   try {
@@ -43,8 +70,20 @@ app.post("/register", async (req, res) => {
   }
 });
 
+// Helper to parse cookies
+function getTokenFromRequest(req) {
+  const cookieHeader = req.headers.cookie;
+  if (!cookieHeader) return null;
+  const cookies = cookieHeader.split(';').reduce((acc, cookie) => {
+    const [name, value] = cookie.trim().split('=');
+    acc[name] = decodeURIComponent(value);
+    return acc;
+  }, {});
+  return cookies.token;
+}
+
 // ✅ Login API
-app.post("/login", async (req, res) => {
+app.post("/login", limiter, async (req, res) => {
   const { email, password } = req.body;
 
   try {
@@ -63,9 +102,20 @@ app.post("/login", async (req, res) => {
       return res.status(400).json({ error: "Invalid credentials" });
     }
 
-    const token = jwt.sign({ id: data.id, email: data.email, username: data.username }, SECRET_KEY, { expiresIn: "1h" });
+    const token = jwt.sign(
+      { id: data.id, email: data.email, username: data.username },
+      SECRET_KEY,
+      { expiresIn: "1h" }
+    );
 
-    res.json({ token, username: data.username, email: data.email });
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict",
+      maxAge: 60 * 60 * 1000,
+    });
+
+    res.json({ username: data.username, email: data.email });
   } catch (error) {
     console.error("🚨 Login error:", error);
     res.status(500).json({ error: "Login failed" });
@@ -74,13 +124,13 @@ app.post("/login", async (req, res) => {
 
 // ✅ Logout API (Optional)
 app.post("/logout", (req, res) => {
+  res.clearCookie("token", { httpOnly: true, secure: true, sameSite: "strict" });
   res.json({ message: "User logged out successfully" });
 });
 
 // ✅ Middleware to Verify JWT
 function authenticateToken(req, res, next) {
-  const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1];
+  const token = getTokenFromRequest(req);
 
   if (!token) return res.sendStatus(401);
 
@@ -91,8 +141,13 @@ function authenticateToken(req, res, next) {
   });
 }
 
+// ✅ Check Authentication Status
+app.get("/auth-status", authenticateToken, (req, res) => {
+  res.json({ authenticated: true, user: { username: req.user.username, email: req.user.email } });
+});
+
 // ✅ Send Phishing Test Email API
-app.post("/api/send-test-email", async (req, res) => {
+app.post("/api/send-test-email", limiter, async (req, res) => {
   try {
     const { testerEmail, testEmail } = req.body;
     if (!testerEmail || !testEmail) {
