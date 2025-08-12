@@ -12,7 +12,7 @@ let sampleData = {};
 document.addEventListener('DOMContentLoaded', async function() {
     const authenticated = await isAuthenticated();
     if (!authenticated) {
-        window.location.href = 'auth.html';
+        window.location.href = '/auth';
         return;
     }
 
@@ -1230,7 +1230,7 @@ async function logout() {
 
         // Redirect to auth page
         setTimeout(() => {
-            window.location.href = 'auth.html';
+            window.location.href = '/auth';
         }, 1000);
     }
 }
