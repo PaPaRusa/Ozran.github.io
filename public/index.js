@@ -19,7 +19,8 @@ function initializeWebsite() {
     // Check if user is already logged in
     checkAuthStatus();
     
-    // Initialize smooth scrolling for anchor links
+    // Smooth scrolling is handled via CSS; this function call is a placeholder
+    // for future enhancements
     initializeSmoothScroll();
     
     // Initialize header scroll effects
