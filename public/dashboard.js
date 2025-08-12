@@ -9,7 +9,13 @@ let chartInstances = {};
 let sampleData = {};
 
 // Initialize Dashboard
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
+    const authenticated = await isAuthenticated();
+    if (!authenticated) {
+        window.location.href = 'auth.html';
+        return;
+    }
+
     initializeDashboard();
     loadSampleData();
     setupEventListeners();
@@ -19,29 +25,27 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Initialize Dashboard
 function initializeDashboard() {
-    // Check authentication
-    if (!isAuthenticated()) {
-        window.location.href = 'auth.html';
-        return;
-    }
-
     // Set default section
     showSection('overview');
-    
+
     // Initialize responsive behavior
     handleResponsiveLayout();
-    
+
     // Set up periodic data refresh
     startDataRefresh();
-    
+
     console.log('🚀 Dashboard initialized successfully');
 }
 
 // Check if user is authenticated
-function isAuthenticated() {
-    const token = localStorage.getItem('userToken');
-    const loggedIn = localStorage.getItem('userLoggedIn');
-    return token && loggedIn === 'true';
+async function isAuthenticated() {
+    try {
+        const res = await fetch('/auth-status', { credentials: 'include' });
+        return res.ok;
+    } catch (error) {
+        console.error('Auth status check failed', error);
+        return false;
+    }
 }
 
 // Load sample data for demonstration
@@ -1209,17 +1213,21 @@ function updateNotificationBadge() {
 }
 
 // Logout Function
-function logout() {
+async function logout() {
     // Show confirmation dialog
     if (confirm('Are you sure you want to logout?')) {
+        try {
+            await fetch('/logout', { method: 'POST', credentials: 'include' });
+        } catch (error) {
+            console.error('Logout failed', error);
+        }
+
         // Clear user data
-        localStorage.removeItem('userToken');
-        localStorage.removeItem('userLoggedIn');
         localStorage.removeItem('userData');
-        
+
         // Show logout message
         showToast('Logged out successfully!', 'info', 2000);
-        
+
         // Redirect to auth page
         setTimeout(() => {
             window.location.href = 'auth.html';
@@ -1332,16 +1340,15 @@ function measurePerformance(name, fn) {
 class APIClient {
     constructor(baseURL = '/api') {
         this.baseURL = baseURL;
-        this.token = localStorage.getItem('userToken');
     }
-    
+
     async request(endpoint, options = {}) {
         const url = `${this.baseURL}${endpoint}`;
         const config = {
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${this.token}`
+                'Content-Type': 'application/json'
             },
+            credentials: 'include',
             ...options
         };
         

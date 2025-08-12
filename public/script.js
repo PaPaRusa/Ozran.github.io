@@ -32,17 +32,19 @@ function initializeWebsite() {
 }
 
 // Check authentication status
-function checkAuthStatus() {
-    const token = localStorage.getItem('userToken');
-    const loggedIn = localStorage.getItem('userLoggedIn');
-    
-    if (token && loggedIn === 'true') {
-        // Update login button to show dashboard link
-        const loginBtns = document.querySelectorAll('.btn[onclick*="auth.html"]');
-        loginBtns.forEach(btn => {
-            btn.textContent = 'Dashboard';
-            btn.onclick = () => window.location.href = 'dashboard.html';
-        });
+async function checkAuthStatus() {
+    try {
+        const response = await fetch('/auth-status', { credentials: 'include' });
+        if (response.ok) {
+            // Update login button to show dashboard link
+            const loginBtns = document.querySelectorAll('.btn[onclick*="auth.html"]');
+            loginBtns.forEach(btn => {
+                btn.textContent = 'Dashboard';
+                btn.onclick = () => window.location.href = 'dashboard.html';
+            });
+        }
+    } catch (error) {
+        console.error('Auth check failed', error);
     }
 }
 
