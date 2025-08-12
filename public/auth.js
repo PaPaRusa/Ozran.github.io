@@ -21,7 +21,7 @@ async function initializeAuth() {
         const res = await fetch('/auth-status', { credentials: 'include' });
         if (res.ok) {
             // Redirect to dashboard if already logged in
-            window.location.href = 'dashboard.html';
+            window.location.href = '/dashboard';
             return;
         }
     } catch (error) {
@@ -162,7 +162,7 @@ async function handleLogin(event) {
 
                 showToast('Login successful! Redirecting...', 'success');
                 setTimeout(() => {
-                    window.location.href = 'dashboard.html';
+                    window.location.href = '/dashboard';
                 }, 1500);
             } else {
                 showToast('Invalid credentials. Please try again.', 'error');
@@ -197,7 +197,7 @@ async function handleLogin(event) {
 
         showToast('Login successful! Redirecting...', 'success');
         setTimeout(() => {
-            window.location.href = 'dashboard.html';
+            window.location.href = '/dashboard';
         }, 1500);
     } catch (error) {
         showToast('An error occurred. Please try again.', 'error');
@@ -246,7 +246,7 @@ async function handleRegister(event) {
 
             showToast('Account created successfully! Welcome to Ozran Secure Shield.', 'success');
             setTimeout(() => {
-                window.location.href = 'dashboard.html';
+                window.location.href = '/dashboard';
             }, 2000);
         }, 2000);
         return;
@@ -537,7 +537,7 @@ function socialLogin(provider) {
         showToast(`Successfully logged in with ${provider}!`, 'success');
         
         setTimeout(() => {
-            window.location.href = 'dashboard.html';
+            window.location.href = '/dashboard';
         }, 1500);
     }, 2000);
 }
