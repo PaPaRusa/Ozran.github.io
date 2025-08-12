@@ -9,6 +9,7 @@ const rateLimit = require("express-rate-limit");
 require("dotenv").config();
 
 const app = express();
+app.set('trust proxy', 1);
 app.use(express.json());
 app.use(cors({ origin: true, credentials: true }));
 // Redirect requests ending with .html to their extensionless counterparts
@@ -123,7 +124,7 @@ app.post("/login", limiter, async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
       maxAge: 60 * 60 * 1000,
     });
@@ -137,7 +138,11 @@ app.post("/login", limiter, async (req, res) => {
 
 // ✅ Logout API (Optional)
 app.post("/logout", (req, res) => {
-  res.clearCookie("token", { httpOnly: true, secure: true, sameSite: "strict" });
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+  });
   res.json({ message: "User logged out successfully" });
 });
 
