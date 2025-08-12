@@ -5,6 +5,7 @@ const cors = require("cors");
 const nodemailer = require("nodemailer");
 const path = require("path");
 const { createClient } = require("@supabase/supabase-js");
+const rateLimit = require("express-rate-limit");
 require("dotenv").config();
 
 const app = express();
@@ -13,6 +14,12 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, "public")));
 
 const SECRET_KEY = process.env.JWT_SECRET || "supersecretkey";
+
+// ✅ Rate Limiter
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100,
+});
 
 // ✅ Supabase Setup
 const supabase = createClient(
@@ -44,7 +51,7 @@ app.post("/register", async (req, res) => {
 });
 
 // ✅ Login API
-app.post("/login", async (req, res) => {
+app.post("/login", limiter, async (req, res) => {
   const { email, password } = req.body;
 
   try {
@@ -92,7 +99,7 @@ function authenticateToken(req, res, next) {
 }
 
 // ✅ Send Phishing Test Email API
-app.post("/api/send-test-email", async (req, res) => {
+app.post("/api/send-test-email", limiter, async (req, res) => {
   try {
     const { testerEmail, testEmail } = req.body;
     if (!testerEmail || !testEmail) {
