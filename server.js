@@ -11,7 +11,20 @@ require("dotenv").config();
 const app = express();
 app.use(express.json());
 app.use(cors({ origin: true, credentials: true }));
-app.use(express.static(path.join(__dirname, "public")));
+// Redirect requests ending with .html to their extensionless counterparts
+app.use((req, res, next) => {
+  if (req.path.endsWith('.html')) {
+    return res.redirect(301, req.path.slice(0, -5));
+  }
+  next();
+});
+
+// Serve static files and allow extensionless URLs
+app.use(
+  express.static(path.join(__dirname, 'public'), {
+    extensions: ['html'],
+  })
+);
 
 if (!process.env.JWT_SECRET) {
   throw new Error("JWT_SECRET environment variable is required");

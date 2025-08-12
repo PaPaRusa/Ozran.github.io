@@ -12,21 +12,21 @@
     </url>
     
     <url>
-        <loc>https://ozran.net/auth.html</loc>
+        <loc>https://ozran.net/auth</loc>
         <lastmod>2024-12-17T00:00:00+00:00</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.80</priority>
     </url>
     
     <url>
-        <loc>https://ozran.net/terms.html</loc>
+        <loc>https://ozran.net/terms</loc>
         <lastmod>2024-12-17T00:00:00+00:00</lastmod>
         <changefreq>yearly</changefreq>
         <priority>0.30</priority>
     </url>
     
     <url>
-        <loc>https://ozran.net/privacy.html</loc>
+        <loc>https://ozran.net/privacy</loc>
         <lastmod>2024-12-17T00:00:00+00:00</lastmod>
         <changefreq>yearly</changefreq>
         <priority>0.30</priority>

@@ -37,10 +37,10 @@ async function checkAuthStatus() {
         const response = await fetch('/auth-status', { credentials: 'include' });
         if (response.ok) {
             // Update login button to show dashboard link
-            const loginBtns = document.querySelectorAll('.btn[onclick*="auth.html"]');
+            const loginBtns = document.querySelectorAll('.btn[onclick*="/auth"]');
             loginBtns.forEach(btn => {
                 btn.textContent = 'Dashboard';
-                btn.onclick = () => window.location.href = 'dashboard.html';
+                btn.onclick = () => window.location.href = '/dashboard';
             });
         }
     } catch (error) {

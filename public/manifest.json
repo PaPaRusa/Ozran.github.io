@@ -82,7 +82,7 @@
         "name": "Dashboard",
         "short_name": "Dashboard",
         "description": "View security dashboard",
-        "url": "/dashboard.html",
+        "url": "/dashboard",
         "icons": [
           {
             "src": "/icons/shortcut-dashboard.png",
@@ -94,7 +94,7 @@
         "name": "New Campaign",
         "short_name": "Campaign",
         "description": "Create new phishing campaign",
-        "url": "/dashboard.html#campaigns",
+        "url": "/dashboard#campaigns",
         "icons": [
           {
             "src": "/icons/shortcut-campaign.png",
@@ -106,7 +106,7 @@
         "name": "Employee Training",
         "short_name": "Training",
         "description": "Manage employee training",
-        "url": "/dashboard.html#employees",
+        "url": "/dashboard#employees",
         "icons": [
           {
             "src": "/icons/shortcut-training.png",

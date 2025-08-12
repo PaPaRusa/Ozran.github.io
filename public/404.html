@@ -137,7 +137,7 @@
             </div>
             
             <div class="error-actions">
-                <button class="btn btn-primary-large" onclick="window.location.href='index.html'">
+                <button class="btn btn-primary-large" onclick="window.location.href='/'">
                     <i class="fas fa-home"></i>
                     Go Home
                 </button>
@@ -150,28 +150,28 @@
             <div class="helpful-links">
                 <h3>Popular Pages</h3>
                 <div class="link-grid">
-                    <a href="index.html#features" class="help-link">
+                    <a href="/#features" class="help-link">
                         <i class="fas fa-star help-icon"></i>
                         <div>
                             <div>Features</div>
                             <small style="color: var(--text-tertiary);">Explore our capabilities</small>
                         </div>
                     </a>
-                    <a href="index.html#pricing" class="help-link">
+                    <a href="/#pricing" class="help-link">
                         <i class="fas fa-tag help-icon"></i>
                         <div>
                             <div>Pricing</div>
                             <small style="color: var(--text-tertiary);">View our plans</small>
                         </div>
                     </a>
-                    <a href="auth.html" class="help-link">
+                    <a href="/auth" class="help-link">
                         <i class="fas fa-sign-in-alt help-icon"></i>
                         <div>
                             <div>Login</div>
                             <small style="color: var(--text-tertiary);">Access your account</small>
                         </div>
                     </a>
-                    <a href="index.html#contact" class="help-link">
+                    <a href="/#contact" class="help-link">
                         <i class="fas fa-headset help-icon"></i>
                         <div>
                             <div>Support</div>
@@ -189,7 +189,7 @@
                 const query = event.target.value.trim();
                 if (query) {
                     // Simple search redirect - in a real app, this would be more sophisticated
-                    window.location.href = `index.html#${query.toLowerCase()}`;
+                    window.location.href = `/#${query.toLowerCase()}`;
                 }
             }
         }
