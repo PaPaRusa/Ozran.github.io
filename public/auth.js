@@ -5,6 +5,7 @@
 // Global variables
 let currentTab = 'login';
 let passwordStrength = 0;
+const DEMO_MODE = false; // Set to true to enable simulated authentication
 
 // Initialize the page when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
@@ -65,13 +66,15 @@ function setupEventListeners() {
             socialLogin(provider);
         });
     });
-    
-    // Form submission prevention for demo
-    document.querySelectorAll('form').forEach(form => {
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
+
+    // Prevent actual form submissions in demo mode
+    if (DEMO_MODE) {
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+            });
         });
-    });
+    }
     
     // Keyboard shortcuts
     document.addEventListener('keydown', handleKeyboardShortcuts);
@@ -124,59 +127,89 @@ function switchTab(tab) {
 }
 
 // Handle login form submission
-function handleLogin(event) {
+async function handleLogin(event) {
     event.preventDefault();
-    
+
     const form = event.target;
     const email = form.email.value.trim();
     const password = form.password.value;
     const remember = form.remember.checked;
-    
+
     // Show loading state
     const submitBtn = form.querySelector('button[type="submit"]');
     setButtonLoading(submitBtn, true);
-    
+
     // Validate form
     if (!validateLoginForm(email, password)) {
         setButtonLoading(submitBtn, false);
         return;
     }
-    
-    // Simulate API call
-    setTimeout(() => {
-        // Demo login - accept any email/password
-        if (email && password) {
-            // Store user session
-            const userData = {
-                email: email,
-                name: email.split('@')[0],
-                loginTime: new Date().toISOString(),
-                remember: remember
-            };
-            
-            localStorage.setItem('userToken', generateToken());
-            localStorage.setItem('userLoggedIn', 'true');
-            localStorage.setItem('userData', JSON.stringify(userData));
-            
-            // Show success message
-            showToast('Login successful! Redirecting...', 'success');
-            
-            // Redirect to dashboard after short delay
-            setTimeout(() => {
-                window.location.href = 'dashboard.html';
-            }, 1500);
-            
-        } else {
-            showToast('Invalid credentials. Please try again.', 'error');
+
+    if (DEMO_MODE) {
+        // Simulated login for demo purposes
+        setTimeout(() => {
+            if (email && password) {
+                const userData = {
+                    email: email,
+                    name: email.split('@')[0],
+                    loginTime: new Date().toISOString(),
+                    remember: remember
+                };
+
+                localStorage.setItem('userToken', generateToken());
+                localStorage.setItem('userLoggedIn', 'true');
+                localStorage.setItem('userData', JSON.stringify(userData));
+
+                showToast('Login successful! Redirecting...', 'success');
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1500);
+            } else {
+                showToast('Invalid credentials. Please try again.', 'error');
+                setButtonLoading(submitBtn, false);
+            }
+        }, 1500);
+        return;
+    }
+
+    try {
+        const response = await fetch('/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        });
+        const data = await response.json();
+        if (!response.ok) {
+            showToast(data.error || 'Invalid credentials. Please try again.', 'error');
             setButtonLoading(submitBtn, false);
+            return;
         }
-    }, 1500);
+
+        const userData = {
+            email: data.email,
+            name: data.username,
+            loginTime: new Date().toISOString(),
+            remember: remember
+        };
+
+        localStorage.setItem('userToken', data.token);
+        localStorage.setItem('userLoggedIn', 'true');
+        localStorage.setItem('userData', JSON.stringify(userData));
+
+        showToast('Login successful! Redirecting...', 'success');
+        setTimeout(() => {
+            window.location.href = 'dashboard.html';
+        }, 1500);
+    } catch (error) {
+        showToast('An error occurred. Please try again.', 'error');
+        setButtonLoading(submitBtn, false);
+    }
 }
 
 // Handle registration form submission
-function handleRegister(event) {
+async function handleRegister(event) {
     event.preventDefault();
-    
+
     const form = event.target;
     const formData = {
         firstname: form.firstname.value.trim(),
@@ -188,41 +221,69 @@ function handleRegister(event) {
         terms: form.terms.checked,
         marketing: form.marketing.checked
     };
-    
+
     // Show loading state
     const submitBtn = form.querySelector('button[type="submit"]');
     setButtonLoading(submitBtn, true);
-    
+
     // Validate form
     if (!validateRegisterForm(formData)) {
         setButtonLoading(submitBtn, false);
         return;
     }
-    
-    // Simulate API call
-    setTimeout(() => {
-        // Demo registration - always succeed
-        const userData = {
-            email: formData.email,
-            name: `${formData.firstname} ${formData.lastname}`,
-            company: formData.company,
-            registrationTime: new Date().toISOString(),
-            marketingOptIn: formData.marketing
-        };
-        
-        localStorage.setItem('userToken', generateToken());
-        localStorage.setItem('userLoggedIn', 'true');
-        localStorage.setItem('userData', JSON.stringify(userData));
-        
-        // Show success message
-        showToast('Account created successfully! Welcome to Ozran Secure Shield.', 'success');
-        
-        // Redirect to dashboard after short delay
+
+    if (DEMO_MODE) {
+        // Simulated registration for demo purposes
         setTimeout(() => {
-            window.location.href = 'dashboard.html';
+            const userData = {
+                email: formData.email,
+                name: `${formData.firstname} ${formData.lastname}`,
+                company: formData.company,
+                registrationTime: new Date().toISOString(),
+                marketingOptIn: formData.marketing
+            };
+
+            localStorage.setItem('userToken', generateToken());
+            localStorage.setItem('userLoggedIn', 'true');
+            localStorage.setItem('userData', JSON.stringify(userData));
+
+            showToast('Account created successfully! Welcome to Ozran Secure Shield.', 'success');
+            setTimeout(() => {
+                window.location.href = 'dashboard.html';
+            }, 2000);
         }, 2000);
-        
-    }, 2000);
+        return;
+    }
+
+    const payload = {
+        username: `${formData.firstname} ${formData.lastname}`.trim(),
+        email: formData.email,
+        password: formData.password
+    };
+
+    try {
+        const response = await fetch('/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        const data = await response.json();
+        if (!response.ok) {
+            showToast(data.error || 'Registration failed', 'error');
+            setButtonLoading(submitBtn, false);
+            return;
+        }
+
+        showToast('Account created successfully! Please log in.', 'success');
+        form.reset();
+        setTimeout(() => {
+            switchTab('login');
+        }, 2000);
+    } catch (error) {
+        showToast('An error occurred. Please try again.', 'error');
+    } finally {
+        setButtonLoading(submitBtn, false);
+    }
 }
 
 // Validate login form
