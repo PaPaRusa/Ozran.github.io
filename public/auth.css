@@ -106,7 +106,7 @@
 /* Main Auth Container */
 .auth-container {
     display: grid;
-    grid-template-columns: 1fr 400px;
+    grid-template-columns: 1fr 35%;
     gap: 0;
     max-width: 1000px;
     width: 100%;
@@ -200,6 +200,13 @@
 .auth-form.active {
     display: block;
     animation: fadeIn 0.3s ease-out;
+}
+
+/* Limit form width for better readability */
+.auth-form form {
+    max-width: 500px;
+    width: 100%;
+    margin: 0 auto;
 }
 
 @keyframes fadeIn {
@@ -878,6 +885,7 @@
     
     .form-row {
         grid-template-columns: 1fr;
+        gap: 1.25rem;
     }
     
     .social-buttons {
