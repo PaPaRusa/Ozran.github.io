@@ -13,6 +13,12 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, "public")));
 
 const SECRET_KEY = process.env.JWT_SECRET || "supersecretkey";
+const TRAINING_URL = process.env.TRAINING_URL;
+
+if (!TRAINING_URL) {
+  console.error("TRAINING_URL environment variable is required");
+  process.exit(1);
+}
 
 // ✅ Supabase Setup
 const supabase = createClient(
@@ -179,7 +185,7 @@ app.get("/api/track-click", async (req, res) => {
     console.error("🚨 Error tracking click:", error);
   }
 
-  res.redirect("https://your-training-page.com");
+  res.redirect(TRAINING_URL);
 });
 
 // ✅ Serve Index Page
