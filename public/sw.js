@@ -13,6 +13,8 @@ const STATIC_FILES = [
     '/dashboard.html',
     '/terms.html',
     '/privacy.html',
+    '/about.html',
+    '/contact.html',
     '/index.css',
     '/auth.css',
     '/dashboard.css',
