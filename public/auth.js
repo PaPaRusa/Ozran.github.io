@@ -15,23 +15,25 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Initialize authentication page
-function initializeAuth() {
+async function initializeAuth() {
     // Check if user is already logged in
-    const userToken = localStorage.getItem('userToken');
-    const userLoggedIn = localStorage.getItem('userLoggedIn');
-    
-    if (userToken && userLoggedIn === 'true') {
-        // Redirect to dashboard if already logged in
-        window.location.href = 'dashboard.html';
-        return;
+    try {
+        const res = await fetch('/auth-status', { credentials: 'include' });
+        if (res.ok) {
+            // Redirect to dashboard if already logged in
+            window.location.href = 'dashboard.html';
+            return;
+        }
+    } catch (error) {
+        console.error('Auth status check failed', error);
     }
-    
+
     // Set default tab
     switchTab('login');
-    
+
     // Add loading states
     addFormLoadingStates();
-    
+
     // Initialize form validation
     initializeFormValidation();
 }
@@ -156,8 +158,6 @@ async function handleLogin(event) {
                     remember: remember
                 };
 
-                localStorage.setItem('userToken', generateToken());
-                localStorage.setItem('userLoggedIn', 'true');
                 localStorage.setItem('userData', JSON.stringify(userData));
 
                 showToast('Login successful! Redirecting...', 'success');
@@ -176,6 +176,7 @@ async function handleLogin(event) {
         const response = await fetch('/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
             body: JSON.stringify({ email, password })
         });
         const data = await response.json();
@@ -192,8 +193,6 @@ async function handleLogin(event) {
             remember: remember
         };
 
-        localStorage.setItem('userToken', data.token);
-        localStorage.setItem('userLoggedIn', 'true');
         localStorage.setItem('userData', JSON.stringify(userData));
 
         showToast('Login successful! Redirecting...', 'success');
@@ -243,8 +242,6 @@ async function handleRegister(event) {
                 marketingOptIn: formData.marketing
             };
 
-            localStorage.setItem('userToken', generateToken());
-            localStorage.setItem('userLoggedIn', 'true');
             localStorage.setItem('userData', JSON.stringify(userData));
 
             showToast('Account created successfully! Welcome to Ozran Secure Shield.', 'success');
@@ -535,8 +532,6 @@ function socialLogin(provider) {
             loginTime: new Date().toISOString()
         };
         
-        localStorage.setItem('userToken', generateToken());
-        localStorage.setItem('userLoggedIn', 'true');
         localStorage.setItem('userData', JSON.stringify(userData));
         
         showToast(`Successfully logged in with ${provider}!`, 'success');
