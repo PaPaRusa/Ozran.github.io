@@ -2,6 +2,7 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 const nodemailer = require("nodemailer");
 const path = require("path");
 const { createClient } = require("@supabase/supabase-js");
@@ -11,6 +12,7 @@ require("dotenv").config();
 const app = express();
 app.set('trust proxy', 1);
 app.use(express.json());
+app.use(cookieParser());
 app.use(cors({ origin: true, credentials: true }));
 // Redirect requests ending with .html to their extensionless counterparts
 app.use((req, res, next) => {
@@ -95,18 +97,6 @@ app.post("/register", async (req, res) => {
   }
 });
 
-// Helper to parse cookies
-function getTokenFromRequest(req) {
-  const cookieHeader = req.headers.cookie;
-  if (!cookieHeader) return null;
-  const cookies = cookieHeader.split(';').reduce((acc, cookie) => {
-    const [name, value] = cookie.trim().split('=');
-    acc[name] = decodeURIComponent(value);
-    return acc;
-  }, {});
-  return cookies.token;
-}
-
 // ✅ Login API
 app.post("/login", limiter, async (req, res) => {
   const { email, password } = req.body;
@@ -159,7 +149,7 @@ app.post("/logout", (req, res) => {
 
 // ✅ Middleware to Verify JWT
 function authenticateToken(req, res, next) {
-  const token = getTokenFromRequest(req);
+  const token = req.cookies.token;
 
   if (!token) return res.sendStatus(401);
 
