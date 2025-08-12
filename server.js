@@ -5,6 +5,7 @@ const cors = require("cors");
 const nodemailer = require("nodemailer");
 const path = require("path");
 const { createClient } = require("@supabase/supabase-js");
+const rateLimit = require("express-rate-limit");
 require("dotenv").config();
 
 const app = express();
@@ -16,6 +17,12 @@ if (!process.env.JWT_SECRET) {
   throw new Error("JWT_SECRET environment variable is required");
 }
 const SECRET_KEY = process.env.JWT_SECRET;
+
+// ✅ Rate Limiter
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100,
+});
 
 // ✅ Supabase Setup
 const supabase = createClient(
@@ -47,7 +54,7 @@ app.post("/register", async (req, res) => {
 });
 
 // ✅ Login API
-app.post("/login", async (req, res) => {
+app.post("/login", limiter, async (req, res) => {
   const { email, password } = req.body;
 
   try {
@@ -95,7 +102,7 @@ function authenticateToken(req, res, next) {
 }
 
 // ✅ Send Phishing Test Email API
-app.post("/api/send-test-email", async (req, res) => {
+app.post("/api/send-test-email", limiter, async (req, res) => {
   try {
     const { testerEmail, testEmail } = req.body;
     if (!testerEmail || !testEmail) {
