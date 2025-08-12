@@ -32,6 +32,12 @@ if (!process.env.JWT_SECRET) {
 }
 const SECRET_KEY = process.env.JWT_SECRET;
 
+if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+  throw new Error(
+    "SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY environment variables are required"
+  );
+}
+
 // ✅ Rate Limiter
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -80,6 +86,11 @@ app.post("/register", async (req, res) => {
     res.status(201).json({ message: "User registered successfully" });
   } catch (error) {
     console.error("🚨 Registration error:", error);
+    if (error.message && error.message.includes("fetch failed")) {
+      return res
+        .status(503)
+        .json({ error: "Unable to reach Supabase. Please try again later." });
+    }
     res.status(400).json({ error: "Email or username already taken" });
   }
 });
