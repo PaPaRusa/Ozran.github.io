@@ -28,6 +28,23 @@ app.post("/register", async (req, res) => {
     return res.status(400).json({ error: "All fields are required" });
   }
 
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    return res.status(400).json({ error: "Invalid email format" });
+  }
+
+  if (password.length < 8) {
+    return res.status(400).json({ error: "Password must be at least 8 characters long" });
+  }
+
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])/;
+  if (!passwordRegex.test(password)) {
+    return res.status(400).json({
+      error:
+        "Password must include uppercase, lowercase, number, and special character",
+    });
+  }
+
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
     const { error } = await supabase
