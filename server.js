@@ -12,7 +12,10 @@ app.use(express.json());
 app.use(cors());
 app.use(express.static(path.join(__dirname, "public")));
 
-const SECRET_KEY = process.env.JWT_SECRET || "supersecretkey";
+if (!process.env.JWT_SECRET) {
+  throw new Error("JWT_SECRET environment variable is required");
+}
+const SECRET_KEY = process.env.JWT_SECRET;
 
 // ✅ Supabase Setup
 const supabase = createClient(
