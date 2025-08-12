@@ -432,7 +432,7 @@ function handleNewsletterSubmit(e) {
     const email = e.target.querySelector('input[type="email"]').value;
     
     // Simulate API call
-    showNotification('Thanks for subscribing! We\'ll keep you updated.', 'success');
+    showNotification("Thanks for subscribing! We'll keep you updated.", "success");
     e.target.reset();
 }
 
