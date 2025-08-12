@@ -57,7 +57,7 @@ function loadSampleData() {
                 riskLevel: 'high',
                 trainingProgress: 75,
                 lastActivity: '2 days ago',
-                avatar: '/api/placeholder/40/40'
+                avatar: 'https://via.placeholder.com/40'
             },
             {
                 id: 2,
@@ -68,7 +68,7 @@ function loadSampleData() {
                 riskLevel: 'low',
                 trainingProgress: 100,
                 lastActivity: '1 day ago',
-                avatar: '/api/placeholder/40/40'
+                avatar: 'https://via.placeholder.com/40'
             },
             {
                 id: 3,
@@ -79,7 +79,7 @@ function loadSampleData() {
                 riskLevel: 'medium',
                 trainingProgress: 60,
                 lastActivity: '3 days ago',
-                avatar: '/api/placeholder/40/40'
+                avatar: 'https://via.placeholder.com/40'
             },
             {
                 id: 4,
@@ -90,7 +90,7 @@ function loadSampleData() {
                 riskLevel: 'medium',
                 trainingProgress: 90,
                 lastActivity: '5 days ago',
-                avatar: '/api/placeholder/40/40'
+                avatar: 'https://via.placeholder.com/40'
             }
         ],
         campaigns: [
@@ -915,7 +915,7 @@ function handleAddEmployee(event) {
         id: sampleData.employees.length + 1,
         ...employeeData,
         riskLevel: employeeData.riskScore > 70 ? 'high' : employeeData.riskScore > 40 ? 'medium' : 'low',
-        avatar: '/api/placeholder/40/40'
+        avatar: 'https://via.placeholder.com/40'
     });
     
     // Refresh table
