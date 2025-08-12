@@ -16,7 +16,7 @@ const STATIC_FILES = [
     '/index.css',
     '/auth.css',
     '/dashboard.css',
-    '/script.js',
+    '/main.js',
     '/auth.js',
     '/dashboard.js',
     '/manifest.json',

@@ -19,8 +19,7 @@ function initializeWebsite() {
     // Check if user is already logged in
     checkAuthStatus();
     
-    // Smooth scrolling is handled via CSS; this function call is a placeholder
-    // for future enhancements
+    // Initialize smooth scrolling for anchor links
     initializeSmoothScroll();
     
     // Initialize header scroll effects
@@ -153,7 +152,7 @@ function handleSmoothScroll(e) {
         
         if (targetElement) {
             const headerHeight = document.querySelector('.header').offsetHeight;
-            const targetPosition = targetElement.offsetTop - headerHeight - 20;
+            const targetPosition = targetElement.offsetTop - headerHeight - 160;
             
             window.scrollTo({
                 top: targetPosition,
@@ -433,7 +432,7 @@ function handleNewsletterSubmit(e) {
     const email = e.target.querySelector('input[type="email"]').value;
     
     // Simulate API call
-    showNotification("Thanks for subscribing! We'll keep you updated.", "success");
+    showNotification('Thanks for subscribing! We\'ll keep you updated.', 'success');
     e.target.reset();
 }
 
@@ -680,4 +679,132 @@ if (location.hostname === 'localhost') {
         animateStats,
         updatePricingDisplay
     };
+}
+// Advanced Scroll Effects
+// Add this to your existing main.js file
+
+// Initialize scroll effects when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    initializeScrollEffects();
+});
+
+function initializeScrollEffects() {
+    // Create overlay element
+    createScrollOverlay();
+    
+    // Add classes to sections for effects
+    prepareSectionsForEffects();
+    
+    // Set up scroll listener
+    setupScrollListener();
+}
+
+function createScrollOverlay() {
+    const overlay = document.createElement('div');
+    overlay.className = 'scroll-overlay';
+    overlay.id = 'scrollOverlay';
+    document.body.appendChild(overlay);
+}
+
+function prepareSectionsForEffects() {
+    // Add blur transition class to main sections
+    const sections = document.querySelectorAll('section');
+    sections.forEach(section => {
+        section.classList.add('parallax-section');
+    });
+}
+
+function setupScrollListener() {
+    let ticking = false;
+    
+    function updateScrollEffects() {
+        const scrollY = window.scrollY;
+        const headerHeight = 80; // Approximate header height
+        const overlay = document.getElementById('scrollOverlay');
+        const sections = document.querySelectorAll('.parallax-section');
+        
+        // Show/hide overlay based on scroll
+        if (scrollY > 50) {
+            overlay.classList.add('active');
+        } else {
+            overlay.classList.remove('active');
+        }
+        
+        // Apply effects to sections
+        sections.forEach((section, index) => {
+            const rect = section.getBoundingClientRect();
+            const sectionTop = rect.top;
+            const sectionHeight = rect.height;
+            const sectionBottom = rect.bottom;
+            
+            // Section is behind header
+            if (sectionTop < headerHeight && sectionBottom > 0) {
+                const passedHeaderRatio = Math.min(1, (headerHeight - sectionTop) / (sectionHeight * 0.3));
+                
+                // Apply dimming effect
+                if (passedHeaderRatio > 0.2) {
+                    section.classList.add('dimmed');
+                } else {
+                    section.classList.remove('dimmed');
+                }
+                
+                // Fade section header if it's passing behind
+                const sectionHeader = section.querySelector('.section-header');
+                if (sectionHeader && sectionTop < headerHeight) {
+                    sectionHeader.classList.add('fading');
+                } else if (sectionHeader) {
+                    sectionHeader.classList.remove('fading');
+                }
+            } else {
+                // Section is not behind header
+                section.classList.remove('dimmed');
+                const sectionHeader = section.querySelector('.section-header');
+                if (sectionHeader) {
+                    sectionHeader.classList.remove('fading');
+                }
+            }
+        });
+        
+        ticking = false;
+    }
+    
+    function requestScrollUpdate() {
+        if (!ticking) {
+            requestAnimationFrame(updateScrollEffects);
+            ticking = true;
+        }
+    }
+    
+    // Throttled scroll listener for performance
+    window.addEventListener('scroll', requestScrollUpdate, { passive: true });
+    
+    // Initial call
+    updateScrollEffects();
+}
+
+// Enhanced header scroll effect (update existing function if you have it)
+function handleHeaderScroll() {
+    const header = document.querySelector('.header');
+    const scrollPosition = window.scrollY;
+    
+    if (scrollPosition > 100) {
+        header.style.backgroundColor = 'rgba(14, 17, 23, 0.98)';
+        header.style.backdropFilter = 'blur(20px) saturate(180%)';
+        header.style.boxShadow = '0 4px 30px rgba(0, 0, 0, 0.3)';
+        header.style.borderBottom = '1px solid rgba(109, 94, 250, 0.2)';
+    } else {
+        header.style.backgroundColor = 'rgba(14, 17, 23, 0.95)';
+        header.style.backdropFilter = 'blur(10px)';
+        header.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.2)';
+        header.style.borderBottom = '1px solid rgba(255, 255, 255, 0.05)';
+    }
+}
+
+// Update existing scroll handler if you have one
+if (typeof window.handleHeaderScroll === 'function') {
+    // Replace existing function
+    window.handleHeaderScroll = handleHeaderScroll;
+} else {
+    // Add scroll listener if not exists
+    window.addEventListener('scroll', handleHeaderScroll);
 }
