@@ -29,15 +29,34 @@ app.use(
   })
 );
 
-if (!process.env.JWT_SECRET) {
-  throw new Error("JWT_SECRET environment variable is required");
-}
-const SECRET_KEY = process.env.JWT_SECRET;
+const isProduction = process.env.NODE_ENV === "production";
 
-if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
-  throw new Error(
-    "SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY environment variables are required"
+let SECRET_KEY = process.env.JWT_SECRET;
+if (!SECRET_KEY) {
+  console.warn(
+    "JWT_SECRET is not set. Using development fallback value; provide a real secret in production."
   );
+  if (isProduction) {
+    console.error("JWT_SECRET environment variable is required in production. Exiting...");
+    process.exit(1);
+  }
+  SECRET_KEY = "your_jwt_secret_here";
+}
+
+let supabaseUrl = process.env.SUPABASE_URL;
+let supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+if (!supabaseUrl || !supabaseServiceRoleKey) {
+  console.warn(
+    "Supabase credentials are not fully set. Using development fallback values; provide real credentials in production."
+  );
+  if (isProduction) {
+    console.error(
+      "SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY environment variables are required in production. Exiting..."
+    );
+    process.exit(1);
+  }
+  supabaseUrl = "https://your-supabase-url.supabase.co";
+  supabaseServiceRoleKey = "your-service-role-key";
 }
 
 // ✅ Rate Limiter
@@ -47,10 +66,7 @@ const limiter = rateLimit({
 });
 
 // ✅ Supabase Setup
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY
-);
+const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
 
 // ✅ Register API
 app.post("/register", async (req, res) => {
