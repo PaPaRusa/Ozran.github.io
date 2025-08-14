@@ -53,11 +53,15 @@ const supabase = createClient(
 );
 
 // ✅ Register API
-app.post("/register", async (req, res) => {
-  const { username, email, password } = req.body;
+app.post("/register", limiter, async (req, res) => {
+  const { username, email, password, confirmPassword } = req.body;
 
-  if (!username || !email || !password) {
+  if (!username || !email || !password || !confirmPassword) {
     return res.status(400).json({ error: "All fields are required" });
+  }
+
+  if (password !== confirmPassword) {
+    return res.status(400).json({ error: "Passwords do not match" });
   }
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -263,4 +267,9 @@ app.get("*", (req, res) => {
 
 // ✅ Start Server
 const PORT = process.env.PORT || 10000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+
+if (require.main === module) {
+  app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+}
+
+module.exports = app;
