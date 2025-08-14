@@ -20,9 +20,12 @@ async function initializeAuth() {
     try {
         const res = await fetch('/auth-status', { credentials: 'include' });
         if (res.ok) {
-            // Redirect to dashboard if already logged in
-            window.location.href = '/dashboard';
-            return;
+            const data = await res.json();
+            if (data.authenticated) {
+                // Redirect to dashboard if already logged in
+                window.location.href = '/dashboard';
+                return;
+            }
         }
     } catch (error) {
         console.error('Auth status check failed', error);
