@@ -34,6 +34,7 @@ if (!process.env.JWT_SECRET) {
 }
 const SECRET_KEY = process.env.JWT_SECRET;
 
+
 if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
   throw new Error(
     "SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY environment variables are required"
@@ -125,7 +126,7 @@ app.post("/login", limiter, async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: req.secure || process.env.USE_HTTPS === 'true',
       sameSite: "strict",
       maxAge: 60 * 60 * 1000,
     });
@@ -141,7 +142,7 @@ app.post("/login", limiter, async (req, res) => {
 app.post("/logout", (req, res) => {
   res.clearCookie("token", {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: req.secure || process.env.USE_HTTPS === 'true',
     sameSite: "strict",
   });
   res.json({ message: "User logged out successfully" });
@@ -263,4 +264,8 @@ app.get("*", (req, res) => {
 
 // ✅ Start Server
 const PORT = process.env.PORT || 10000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+if (require.main === module) {
+  app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+}
+
+module.exports = app;
