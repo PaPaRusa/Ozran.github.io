@@ -7,13 +7,14 @@ const nodemailer = require("nodemailer");
 const path = require("path");
 const { createClient } = require("@supabase/supabase-js");
 const rateLimit = require("express-rate-limit");
+const { corsOptions } = require("./config");
 require("dotenv").config();
 
 const app = express();
 app.set('trust proxy', 1);
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({ origin: true, credentials: true }));
+app.use(cors(corsOptions));
 // Redirect requests ending with .html to their extensionless counterparts
 app.use((req, res, next) => {
   if (req.path.endsWith('.html')) {
