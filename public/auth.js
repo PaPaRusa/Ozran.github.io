@@ -151,15 +151,6 @@ async function handleLogin(event) {
         // Simulated login for demo purposes
         setTimeout(() => {
             if (email && password) {
-                const userData = {
-                    email: email,
-                    name: email.split('@')[0],
-                    loginTime: new Date().toISOString(),
-                    remember: remember
-                };
-
-                localStorage.setItem('userData', JSON.stringify(userData));
-
                 showToast('Login successful! Redirecting...', 'success');
                 setTimeout(() => {
                     window.location.href = '/dashboard';
@@ -186,16 +177,8 @@ async function handleLogin(event) {
             return;
         }
 
-        const userData = {
-            email: data.email,
-            name: data.username,
-            loginTime: new Date().toISOString(),
-            remember: remember
-        };
-
-        localStorage.setItem('userData', JSON.stringify(userData));
-
         showToast('Login successful! Redirecting...', 'success');
+        // User data is stored server-side via HTTP-only cookies
         setTimeout(() => {
             window.location.href = '/dashboard';
         }, 1500);
@@ -234,16 +217,6 @@ async function handleRegister(event) {
     if (DEMO_MODE) {
         // Simulated registration for demo purposes
         setTimeout(() => {
-            const userData = {
-                email: formData.email,
-                name: `${formData.firstname} ${formData.lastname}`,
-                company: formData.company,
-                registrationTime: new Date().toISOString(),
-                marketingOptIn: formData.marketing
-            };
-
-            localStorage.setItem('userData', JSON.stringify(userData));
-
             showToast('Account created successfully! Welcome to Ozran Secure Shield.', 'success');
             setTimeout(() => {
                 window.location.href = '/dashboard';
@@ -525,17 +498,8 @@ function socialLogin(provider) {
     
     // Simulate social login
     setTimeout(() => {
-        const userData = {
-            email: `user@${provider}.com`,
-            name: `${provider} User`,
-            provider: provider,
-            loginTime: new Date().toISOString()
-        };
-        
-        localStorage.setItem('userData', JSON.stringify(userData));
-        
         showToast(`Successfully logged in with ${provider}!`, 'success');
-        
+
         setTimeout(() => {
             window.location.href = '/dashboard';
         }, 1500);

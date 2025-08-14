@@ -7,13 +7,14 @@ const nodemailer = require("nodemailer");
 const path = require("path");
 const { createClient } = require("@supabase/supabase-js");
 const rateLimit = require("express-rate-limit");
+const { corsOptions } = require("./config");
 require("dotenv").config();
 
 const app = express();
 app.set('trust proxy', 1);
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({ origin: true, credentials: true }));
+app.use(cors(corsOptions));
 // Redirect requests ending with .html to their extensionless counterparts
 app.use((req, res, next) => {
   if (req.path.endsWith('.html')) {
@@ -29,15 +30,38 @@ app.use(
   })
 );
 
-if (!process.env.JWT_SECRET) {
-  throw new Error("JWT_SECRET environment variable is required");
+const isProduction = process.env.NODE_ENV === "production";
+
+let SECRET_KEY = process.env.JWT_SECRET;
+if (!SECRET_KEY) {
+  console.warn(
+    "JWT_SECRET is not set. Using development fallback value; provide a real secret in production."
+  );
+  if (isProduction) {
+    console.error("JWT_SECRET environment variable is required in production. Exiting...");
+    process.exit(1);
+  }
+  SECRET_KEY = "your_jwt_secret_here";
 }
-const SECRET_KEY = process.env.JWT_SECRET;
 
 if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
   throw new Error(
     "SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY environment variables are required"
+
+let supabaseUrl = process.env.SUPABASE_URL;
+let supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+if (!supabaseUrl || !supabaseServiceRoleKey) {
+  console.warn(
+    "Supabase credentials are not fully set. Using development fallback values; provide real credentials in production."
   );
+  if (isProduction) {
+    console.error(
+      "SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY environment variables are required in production. Exiting..."
+    );
+    process.exit(1);
+  }
+  supabaseUrl = "https://your-supabase-url.supabase.co";
+  supabaseServiceRoleKey = "your-service-role-key";
 }
 
 // ✅ Rate Limiter
@@ -47,10 +71,7 @@ const limiter = rateLimit({
 });
 
 // ✅ Supabase Setup
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY
-);
+const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
 
 // ✅ Register API
 app.post("/register", limiter, async (req, res) => {
@@ -129,7 +150,7 @@ app.post("/login", limiter, async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: req.secure || process.env.USE_HTTPS === 'true',
       sameSite: "strict",
       maxAge: 60 * 60 * 1000,
     });
@@ -145,7 +166,7 @@ app.post("/login", limiter, async (req, res) => {
 app.post("/logout", (req, res) => {
   res.clearCookie("token", {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: req.secure || process.env.USE_HTTPS === 'true',
     sameSite: "strict",
   });
   res.json({ message: "User logged out successfully" });
