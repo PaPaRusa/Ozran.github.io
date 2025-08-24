@@ -159,8 +159,8 @@ app.post("/login", limiter, async (req, res) => {
   }
 });
 
-// ✅ Logout API (Optional)
-app.post("/logout", (req, res) => {
+// ✅ Logout API (supports POST and GET)
+function handleLogout(req, res) {
   res.clearCookie("token", {
     httpOnly: true,
     secure: req.secure || process.env.USE_HTTPS === 'true',
@@ -168,7 +168,10 @@ app.post("/logout", (req, res) => {
     path: '/',
   });
   res.status(200).json({ message: "User logged out successfully" });
-});
+}
+
+app.post("/logout", handleLogout);
+app.get("/logout", handleLogout);
 
 // ✅ Middleware to Verify JWT
 function authenticateToken(req, res, next) {
