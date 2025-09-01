@@ -66,8 +66,16 @@ const limiter = rateLimit({
   max: 100,
 });
 
-// ✅ Supabase Setup
-const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
+// ✅ Supabase Setup with optional fallback
+const useSupabase =
+  supabaseUrl &&
+  supabaseServiceRoleKey &&
+  !supabaseUrl.includes("your-supabase-url") &&
+  !supabaseServiceRoleKey.includes("your-service-role-key");
+const supabase = useSupabase
+  ? createClient(supabaseUrl, supabaseServiceRoleKey)
+  : null;
+const devUsers = new Map();
 
 // ✅ Register API
 app.post("/register", limiter, async (req, res) => {
@@ -100,11 +108,22 @@ app.post("/register", limiter, async (req, res) => {
 
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
-    const { error } = await supabase
-      .from("users")
-      .insert([{ email, username, password: hashedPassword }]);
-
-    if (error) throw error;
+    if (useSupabase) {
+      const { error } = await supabase
+        .from("users")
+        .insert([{ email, username, password: hashedPassword }]);
+      if (error) throw error;
+    } else {
+      if (devUsers.has(email)) {
+        return res.status(400).json({ error: "Email or username already taken" });
+      }
+      devUsers.set(email, {
+        id: devUsers.size + 1,
+        email,
+        username,
+        password: hashedPassword,
+      });
+    }
 
     res.status(201).json({ message: "User registered successfully" });
   } catch (error) {
@@ -123,23 +142,31 @@ app.post("/login", limiter, async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const { data, error } = await supabase
-      .from("users")
-      .select("id, email, username, password")
-      .eq("email", email)
-      .single();
-
-    if (error || !data) {
-      return res.status(400).json({ error: "Invalid credentials" });
+    let user;
+    if (useSupabase) {
+      const { data, error } = await supabase
+        .from("users")
+        .select("id, email, username, password")
+        .eq("email", email)
+        .single();
+      if (error || !data) {
+        return res.status(400).json({ error: "Invalid credentials" });
+      }
+      user = data;
+    } else {
+      user = devUsers.get(email);
+      if (!user) {
+        return res.status(400).json({ error: "Invalid credentials" });
+      }
     }
 
-    const isValid = await bcrypt.compare(password, data.password);
+    const isValid = await bcrypt.compare(password, user.password);
     if (!isValid) {
       return res.status(400).json({ error: "Invalid credentials" });
     }
 
     const token = jwt.sign(
-      { id: data.id, email: data.email, username: data.username },
+      { id: user.id, email: user.email, username: user.username },
       SECRET_KEY,
       { expiresIn: "1h" }
     );
@@ -152,7 +179,7 @@ app.post("/login", limiter, async (req, res) => {
       path: '/',
     });
 
-    res.json({ username: data.username, email: data.email });
+    res.json({ username: user.username, email: user.email });
   } catch (error) {
     console.error("🚨 Login error:", error);
     res.status(500).json({ error: "Login failed" });
@@ -267,7 +294,9 @@ app.get("/api/track-click", async (req, res) => {
   console.log(`📊 User clicked phishing link: ${email}`);
 
   try {
-    await supabase.from("phishing_clicks").insert([{ email }]);
+    if (useSupabase) {
+      await supabase.from("phishing_clicks").insert([{ email }]);
+    }
 
     const testerEmail = process.env.TESTER_EMAIL;
     const alertMailOptions = {
