@@ -116,7 +116,7 @@ async function handleFetch(request) {
         console.error('Service Worker: Fetch error', error);
         
         // Return offline fallback for HTML requests
-        if (request.headers.get('accept')?.includes('text/html')) {
+        if (request.headers.get('accept')?.includes('text/  html')) {
             return await getOfflineFallback();
         }
         
@@ -152,22 +152,31 @@ async function networkFirst(request) {
     try {
         const networkResponse = await fetch(request);
         
-        // Cache successful responses
-        if (networkResponse.status === 200) {
+        // FIX 1: Use response.ok to cache ALL successful responses (status 200-299)
+        if (networkResponse.ok) { 
             const cache = await caches.open(DYNAMIC_CACHE_NAME);
             cache.put(request, networkResponse.clone());
         }
         
+        // Always return the network response, regardless of caching success (e.g., even if it's a 404/500, we still want to show the user the immediate server response).
         return networkResponse;
     } catch (error) {
-        // Network failed, try cache
+        // Network failed (i.e., browser couldn't connect, DNS failure, etc.), try cache
+        console.warn('Network request failed. Falling back to cache...');
         const cachedResponse = await caches.match(request);
         
         if (cachedResponse) {
             return cachedResponse;
         }
         
-        throw error;
+        // FIX 2: Instead of throwing, return a generic error or fallback response 
+        // to prevent the Service Worker from crashing the request.
+        // This is highly recommended for production Service Workers.
+        return new Response('Network connection failed and no cache available.', {
+            status: 503,
+            statusText: 'Service Unavailable',
+            headers: new Headers({ 'Content-Type': 'text/plain' })
+        });
     }
 }
 
@@ -176,12 +185,17 @@ async function updateCache(request) {
     try {
         const networkResponse = await fetch(request);
         
-        if (networkResponse.status === 200) {
+        // FIX 1: Use response.ok to include all success codes (200-299).
+        // FIX 2: Call .clone() before caching to prevent the response stream from being consumed.
+        if (networkResponse.ok) { 
             const cache = await caches.open(DYNAMIC_CACHE_NAME);
-            cache.put(request, networkResponse);
+            cache.put(request, networkResponse.clone()); // CRITICAL FIX: use .clone()
         }
+        
+        // Note: We don't return networkResponse here, as this function is just for updating the cache.
+        
     } catch (error) {
-        // Silently fail background updates
+        // Silently fail background updates (This is fine for this strategy)
         console.log('Service Worker: Background cache update failed', error);
     }
 }

@@ -126,13 +126,20 @@ app.post("/login", limiter, async (req, res) => {
       SECRET_KEY,
       { expiresIn: "1h" }
     );
+    
+    // ⬇️ CRITICAL FIX: Conditional Cookie Settings ⬇️
+    const isProduction = process.env.NODE_ENV === "production";
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-      maxAge: 60 * 60 * 1000,
+      // 1. secure: MUST be true in production (HTTPS)
+      secure: isProduction,
+      // 2. sameSite: 'None' for production (requires secure: true).
+      //    'Lax' is a safe default for local development (HTTP).
+      sameSite: isProduction ? "None" : "lax", 
+      maxAge: 60 * 60 * 1000, // 1 hour
     });
+    // ⬆️ CRITICAL FIX: Conditional Cookie Settings ⬆️
 
     res.json({ username: data.username, email: data.email });
   } catch (error) {
@@ -151,17 +158,20 @@ app.post("/logout", (req, res) => {
   res.json({ message: "User logged out successfully" });
 });
 
-// ✅ Middleware to Verify JWT
+// ✅ Middleware to Verify JWT (Improved Error Response)
 function authenticateToken(req, res, next) {
-  const token = req.cookies.token;
+    const token = req.cookies.token;
 
-  if (!token) return res.sendStatus(401);
+    // Send a JSON response for easier client-side error handling
+    if (!token) return res.status(401).json({ error: "Unauthorized: No authentication token." });
 
-  jwt.verify(token, SECRET_KEY, (err, user) => {
-    if (err) return res.sendStatus(403);
-    req.user = user;
-    next();
-  });
+    jwt.verify(token, SECRET_KEY, (err, user) => {
+        // Send a JSON response for expired/invalid token
+        if (err) return res.status(403).json({ error: "Forbidden: Token is invalid or expired." });
+        
+        req.user = user;
+        next();
+    });
 }
 
 // Ensure 'authenticateToken' middleware is defined and available.
