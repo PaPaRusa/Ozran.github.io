@@ -42,9 +42,7 @@ function initializeDashboard() {
 async function isAuthenticated() {
     try {
         const res = await fetch('/auth-status', { credentials: 'include' });
-        if (!res.ok) return false;
-        const data = await res.json();
-        return data.authenticated === true;
+        return res.ok;
     } catch (error) {
         console.error('Auth status check failed', error);
         return false;
@@ -614,7 +612,6 @@ async function loadUserData() {
         const res = await fetch('/auth-status', { credentials: 'include' });
         if (!res.ok) return;
         const data = await res.json();
-        if (!data.authenticated) return;
         currentUser = { name: data.user.username, email: data.user.email };
 
         // Update user name in header

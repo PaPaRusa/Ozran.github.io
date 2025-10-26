@@ -182,23 +182,8 @@ function authenticateToken(req, res, next) {
 }
 
 // ✅ Check Authentication Status
-app.get("/auth-status", (req, res) => {
-  const token = req.cookies.token;
-
-  if (!token) {
-    return res.status(200).json({ authenticated: false });
-  }
-
-  jwt.verify(token, SECRET_KEY, (err, user) => {
-    if (err) {
-      return res.status(200).json({ authenticated: false });
-    }
-
-    res.status(200).json({
-      authenticated: true,
-      user: { username: user.username, email: user.email },
-    });
-  });
+app.get("/auth-status", authenticateToken, (req, res) => {
+  res.json({ authenticated: true, user: { username: req.user.username, email: req.user.email } });
 });
 
 // ✅ Send Phishing Test Email API

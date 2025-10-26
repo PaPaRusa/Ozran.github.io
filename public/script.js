@@ -35,11 +35,7 @@ function initializeWebsite() {
 async function checkAuthStatus() {
     try {
         const response = await fetch('/auth-status', { credentials: 'include' });
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        if (data.authenticated) {
+        if (response.ok) {
             // Update login button to show dashboard link
             const loginBtns = document.querySelectorAll('.btn[onclick*="/auth"]');
             loginBtns.forEach(btn => {
