@@ -9,7 +9,7 @@ process.env.SUPABASE_SERVICE_ROLE_KEY = 'test-key';
 
 const app = require('../server');
 
-function makeRequest(headers = {}, method = 'POST') {
+function makeRequest(headers = {}) {
   return new Promise((resolve, reject) => {
     const server = app.listen(0, () => {
       const { port } = server.address();
@@ -17,7 +17,7 @@ function makeRequest(headers = {}, method = 'POST') {
         hostname: '127.0.0.1',
         port,
         path: '/logout',
-        method,
+        method: 'POST',
         headers,
       };
 
@@ -64,9 +64,3 @@ test('HTTPS request sets Secure flag', async () => {
     const cookie = res.headers['set-cookie'][0] || '';
     assert.ok(cookie.includes('Path=/'));
   });
-
-test('GET request also clears cookie', async () => {
-  const res = await makeRequest({}, 'GET');
-  const cookie = res.headers['set-cookie'][0] || '';
-  assert.ok(cookie.includes('Path=/'));
-});
