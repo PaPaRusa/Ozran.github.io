@@ -149,7 +149,6 @@ app.post("/login", limiter, async (req, res) => {
       secure: req.secure || process.env.USE_HTTPS === 'true',
       sameSite: "strict",
       maxAge: 60 * 60 * 1000,
-      path: '/',
     });
 
     res.json({ username: data.username, email: data.email });
@@ -165,9 +164,8 @@ app.post("/logout", (req, res) => {
     httpOnly: true,
     secure: req.secure || process.env.USE_HTTPS === 'true',
     sameSite: "strict",
-    path: '/',
   });
-  res.status(200).json({ message: "User logged out successfully" });
+  res.json({ message: "User logged out successfully" });
 });
 
 // ✅ Middleware to Verify JWT
