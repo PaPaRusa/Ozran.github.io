@@ -7,7 +7,6 @@ let currentSection = 'overview';
 let currentProfileTab = 'personal';
 let chartInstances = {};
 let sampleData = {};
-let currentUser = null;
 
 // Initialize Dashboard
 document.addEventListener('DOMContentLoaded', async function() {
@@ -607,33 +606,26 @@ function hideToast() {
 }
 
 // Data Loading Functions
-async function loadUserData() {
-    try {
-        const res = await fetch('/auth-status', { credentials: 'include' });
-        if (!res.ok) return;
-        const data = await res.json();
-        currentUser = { name: data.user.username, email: data.user.email };
-
-        // Update user name in header
-        const userNameElement = document.getElementById('userName');
-        const profileNameElement = document.getElementById('profileName');
-
-        if (currentUser.name) {
-            if (userNameElement) userNameElement.textContent = currentUser.name;
-            if (profileNameElement) profileNameElement.textContent = currentUser.name;
-        }
-
-        // Update user email if available
-        if (currentUser.email) {
-            const emailInputs = document.querySelectorAll('input[type="email"]');
-            emailInputs.forEach(input => {
-                if (input.closest('.profile-form')) {
-                    input.value = currentUser.email;
-                }
-            });
-        }
-    } catch (error) {
-        console.error('Failed to load user data', error);
+function loadUserData() {
+    const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+    
+    // Update user name in header
+    const userNameElement = document.getElementById('userName');
+    const profileNameElement = document.getElementById('profileName');
+    
+    if (userData.name) {
+        if (userNameElement) userNameElement.textContent = userData.name;
+        if (profileNameElement) profileNameElement.textContent = userData.name;
+    }
+    
+    // Update user email if available
+    if (userData.email) {
+        const emailInputs = document.querySelectorAll('input[type="email"]');
+        emailInputs.forEach(input => {
+            if (input.closest('.profile-form')) {
+                input.value = userData.email;
+            }
+        });
     }
 }
 
@@ -671,25 +663,23 @@ function loadTemplates() {
     updateTemplateGrid(sampleData.templates);
 }
 
-async function loadProfileData() {
-    if (!currentUser) {
-        await loadUserData();
-    }
-    if (!currentUser) return;
-
+function loadProfileData() {
+    // Load user profile data into forms
+    const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+    
     // Update profile form fields
-    if (currentUser.name) {
-        const nameParts = currentUser.name.split(' ');
+    if (userData.name) {
+        const nameParts = userData.name.split(' ');
         const firstNameInput = document.querySelector('#personal-tab input[type="text"]');
         const lastNameInput = document.querySelectorAll('#personal-tab input[type="text"]')[1];
-
+        
         if (firstNameInput && nameParts[0]) firstNameInput.value = nameParts[0];
         if (lastNameInput && nameParts[1]) lastNameInput.value = nameParts[1];
     }
-
-    if (currentUser.email) {
+    
+    if (userData.email) {
         const emailInput = document.querySelector('#personal-tab input[type="email"]');
-        if (emailInput) emailInput.value = currentUser.email;
+        if (emailInput) emailInput.value = userData.email;
     }
 }
 
@@ -1012,9 +1002,10 @@ function handleProfileUpdate(event) {
         updates[key] = value;
     }
     
-    // Update in-memory user data
-    if (!currentUser) currentUser = {};
-    Object.assign(currentUser, updates);
+    // Update localStorage
+    const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+    Object.assign(userData, updates);
+    localStorage.setItem('userData', JSON.stringify(userData));
     
     // Show success message
     showToast('Profile updated successfully!');
@@ -1232,7 +1223,7 @@ async function logout() {
         }
 
         // Clear user data
-        currentUser = null;
+        localStorage.removeItem('userData');
 
         // Show logout message
         showToast('Logged out successfully!', 'info', 2000);
