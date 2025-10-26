@@ -51,10 +51,16 @@ test('HTTPS request sets Secure flag', async () => {
   assert.ok(cookie.includes('Secure'));
 });
 
-test('USE_HTTPS env forces Secure cookie', async () => {
-  process.env.USE_HTTPS = 'true';
-  const res = await makeRequest();
-  const cookie = res.headers['set-cookie'][0] || '';
-  assert.ok(cookie.includes('Secure'));
-  delete process.env.USE_HTTPS;
-});
+  test('USE_HTTPS env forces Secure cookie', async () => {
+    process.env.USE_HTTPS = 'true';
+    const res = await makeRequest();
+    const cookie = res.headers['set-cookie'][0] || '';
+    assert.ok(cookie.includes('Secure'));
+    delete process.env.USE_HTTPS;
+  });
+
+  test('logout cookie clears across all paths', async () => {
+    const res = await makeRequest();
+    const cookie = res.headers['set-cookie'][0] || '';
+    assert.ok(cookie.includes('Path=/'));
+  });
