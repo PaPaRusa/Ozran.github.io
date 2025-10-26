@@ -44,6 +44,10 @@ if (!SECRET_KEY) {
   SECRET_KEY = "your_jwt_secret_here";
 }
 
+if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+  throw new Error(
+    "SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY environment variables are required"
+
 let supabaseUrl = process.env.SUPABASE_URL;
 let supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 if (!supabaseUrl || !supabaseServiceRoleKey) {
