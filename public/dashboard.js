@@ -8,11 +8,35 @@ let currentProfileTab = 'personal';
 let chartInstances = {};
 let sampleData = {};
 
+/**
+ * Performs an immediate check after the dashboard loads to ensure the session is active.
+ * This prevents the 'see page for a second then log out' issue.
+ */
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('/auth-status')
+        .then(response => {
+            if (response.status === 401 || response.status === 403) {
+                // If the server explicitly says Unauthorized (401/403), trigger logout.
+                console.warn('Session expired or unauthorized. Triggering logout.');
+                logout(); 
+            }
+            // If response.status is 200, the user is authorized, and the page remains.
+        })
+        .catch(err => {
+            // Handle network issues gracefully
+            console.error('Failed to check auth status:', err);
+            // Optionally redirect if critical endpoint is unreachable
+            // logout(); 
+        });
+    
+    // Initialize charts and other dashboard features here (e.g., initCharts();)
+});
+
 // Initialize Dashboard
 document.addEventListener('DOMContentLoaded', async function() {
     const authenticated = await isAuthenticated();
     if (!authenticated) {
-        window.location.href = '/auth';
+        window.location.href = 'auth.html';
         return;
     }
 
@@ -1230,7 +1254,7 @@ async function logout() {
 
         // Redirect to auth page
         setTimeout(() => {
-            window.location.href = '/auth';
+            window.location.href = 'auth.html';
         }, 1000);
     }
 }

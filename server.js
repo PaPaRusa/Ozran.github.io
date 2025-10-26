@@ -164,9 +164,13 @@ function authenticateToken(req, res, next) {
   });
 }
 
-// ✅ Check Authentication Status
-app.get("/auth-status", authenticateToken, (req, res) => {
-  res.json({ authenticated: true, user: { username: req.user.username, email: req.user.email } });
+// Ensure 'authenticateToken' middleware is defined and available.
+
+// CRITICAL FIX: Make sure the route matches exactly
+app.get('/auth-status', authenticateToken, (req, res) => {
+    // If the 'authenticateToken' middleware successfully calls next(), 
+    // it means the token is valid, and we return a 200 OK status.
+    res.status(200).json({ status: 'authenticated', user: req.user });
 });
 
 // ✅ Send Phishing Test Email API
@@ -258,6 +262,20 @@ app.get("/api/track-click", async (req, res) => {
   }
 
   res.redirect("https://your-training-page.com");
+});
+
+// This route is called by the client-side JavaScript to clear the cookie.
+app.post('/api/logout', (req, res) => {
+    // Clear the JWT cookie (ensure the cookie name matches what you set on login)
+    // IMPORTANT: Path, Secure, and SameSite must match how the cookie was set!
+    res.clearCookie('authToken', { 
+        httpOnly: true, 
+        secure: process.env.NODE_ENV === 'production', // Use true in production (like Render)
+        sameSite: 'Strict' // Use the same setting as when the cookie was set
+    });
+    
+    // Send a success response
+    res.status(200).json({ message: 'Logged out successfully' });
 });
 
 // ✅ Serve Index Page

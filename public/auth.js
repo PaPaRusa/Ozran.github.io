@@ -7,36 +7,43 @@ let currentTab = 'login';
 let passwordStrength = 0;
 const DEMO_MODE = false; // Set to true to enable simulated authentication
 
+
+
+async function initializeAuth() {
+    // Check if user is already logged in
+    try {
+        const res = await fetch('/auth-status', { credentials: 'include' });
+
+        // REWRITE: Check if the response is NOT successful (any status >= 400 or a network issue)
+        if (!res.ok) {
+            console.warn(`Auth check failed with status: ${res.status}. Proceeding with login flow.`);
+            // Do not redirect, just allow the login flow below to start
+            // return; // NO return here
+        }
+        
+        if (res.ok) { // If we got a 200, then redirect
+            window.location.href = 'dashboard.html';
+            return;
+        }
+
+    } catch (error) {
+        // This 'catch' block usually only fires for network/DNS errors, not HTTP errors (like 401).
+        console.error('Auth status check failed (Network Error):', error);
+        // We allow the login flow to start below.
+    }
+
+    // This section runs if res.ok was false (401, 403, 500) OR if a network error occurred
+    switchTab('login');
+    addFormLoadingStates();
+    initializeFormValidation();
+}
+
 // Initialize the page when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     initializeAuth();
     setupEventListeners();
     initializePasswordStrength();
 });
-
-// Initialize authentication page
-async function initializeAuth() {
-    // Check if user is already logged in
-    try {
-        const res = await fetch('/auth-status', { credentials: 'include' });
-        if (res.ok) {
-            // Redirect to dashboard if already logged in
-            window.location.href = '/dashboard';
-            return;
-        }
-    } catch (error) {
-        console.error('Auth status check failed', error);
-    }
-
-    // Set default tab
-    switchTab('login');
-
-    // Add loading states
-    addFormLoadingStates();
-
-    // Initialize form validation
-    initializeFormValidation();
-}
 
 // Setup all event listeners
 function setupEventListeners() {
@@ -162,7 +169,7 @@ async function handleLogin(event) {
 
                 showToast('Login successful! Redirecting...', 'success');
                 setTimeout(() => {
-                    window.location.href = '/dashboard';
+                    window.location.href = 'dashboard.html';
                 }, 1500);
             } else {
                 showToast('Invalid credentials. Please try again.', 'error');
@@ -197,7 +204,7 @@ async function handleLogin(event) {
 
         showToast('Login successful! Redirecting...', 'success');
         setTimeout(() => {
-            window.location.href = '/dashboard';
+            window.location.href = 'dashboard.html';
         }, 1500);
     } catch (error) {
         showToast('An error occurred. Please try again.', 'error');
@@ -246,7 +253,7 @@ async function handleRegister(event) {
 
             showToast('Account created successfully! Welcome to Ozran Secure Shield.', 'success');
             setTimeout(() => {
-                window.location.href = '/dashboard';
+                window.location.href = 'dashboard.html';
             }, 2000);
         }, 2000);
         return;
@@ -537,7 +544,7 @@ function socialLogin(provider) {
         showToast(`Successfully logged in with ${provider}!`, 'success');
         
         setTimeout(() => {
-            window.location.href = '/dashboard';
+            window.location.href = 'dashboard.html';
         }, 1500);
     }, 2000);
 }
