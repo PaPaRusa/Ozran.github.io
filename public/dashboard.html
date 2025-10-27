@@ -1117,13 +1117,13 @@
                     </div>
                 </div>
             </section>
-                        <!-- Profile Section -->
+            <!-- Profile Section -->
             <section id="profile-section" class="content-section">
                 <div class="profile-container">
                     <div class="profile-sidebar">
                         <div class="profile-card">
                             <div class="profile-avatar-section">
-                                <img src="https://ui-avatars.com/api/?name=John+Doe&background=6d5efa&color=fff&size=120" alt="Profile Avatar" class="profile-avatar" id="profileAvatar">
+                                <img src="https://via.placeholder.com/120" alt="Profile Avatar" class="profile-avatar">
                                 <button class="avatar-upload-btn">
                                     <i class="fas fa-camera"></i>
                                 </button>
@@ -1150,19 +1150,19 @@
                         </div>
                         
                         <div class="profile-menu">
-                            <button class="profile-menu-item active" data-tab="personal" onclick="switchProfileTab('personal')">
+                            <button class="profile-menu-item active" data-tab="personal">
                                 <i class="fas fa-user"></i>
                                 <span>Personal Information</span>
                             </button>
-                            <button class="profile-menu-item" data-tab="security" onclick="switchProfileTab('security')">
+                            <button class="profile-menu-item" data-tab="security">
                                 <i class="fas fa-shield-alt"></i>
                                 <span>Security Settings</span>
                             </button>
-                            <button class="profile-menu-item" data-tab="billing" onclick="switchProfileTab('billing')">
+                            <button class="profile-menu-item" data-tab="billing">
                                 <i class="fas fa-credit-card"></i>
                                 <span>Billing & Plans</span>
                             </button>
-                            <button class="profile-menu-item" data-tab="notifications" onclick="switchProfileTab('notifications')">
+                            <button class="profile-menu-item" data-tab="notifications">
                                 <i class="fas fa-bell"></i>
                                 <span>Notifications</span>
                             </button>
@@ -1177,36 +1177,46 @@
                                 <p>Update your personal details and contact information</p>
                             </div>
                             
-                            <form class="profile-form" onsubmit="handleProfileUpdate(event)">
+                            <form class="profile-form">
                                 <div class="form-row">
                                     <div class="form-group">
                                         <label class="form-label">First Name</label>
-                                        <input type="text" class="form-input" name="firstName" value="John" required>
+                                        <input type="text" class="form-input" value="John" required>
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label">Last Name</label>
-                                        <input type="text" class="form-input" name="lastName" value="Doe" required>
+                                        <input type="text" class="form-input" value="Doe" required>
                                     </div>
                                 </div>
                                 
                                 <div class="form-group">
                                     <label class="form-label">Email Address</label>
-                                    <input type="email" class="form-input" name="email" value="john.doe@company.com" required>
+                                    <input type="email" class="form-input" value="john.doe@company.com" required>
                                 </div>
                                 
                                 <div class="form-group">
                                     <label class="form-label">Phone Number</label>
-                                    <input type="tel" class="form-input" name="phone" value="+1 (555) 123-4567">
+                                    <input type="tel" class="form-input" value="+1 (555) 123-4567">
                                 </div>
                                 
                                 <div class="form-group">
                                     <label class="form-label">Company</label>
-                                    <input type="text" class="form-input" name="company" value="TechCorp Industries" required>
+                                    <input type="text" class="form-input" value="TechCorp Industries" required>
                                 </div>
                                 
                                 <div class="form-group">
                                     <label class="form-label">Job Title</label>
-                                    <input type="text" class="form-input" name="jobTitle" value="Security Administrator">
+                                    <input type="text" class="form-input" value="Security Administrator">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Time Zone</label>
+                                    <select class="form-input">
+                                        <option value="UTC-8">Pacific Time (UTC-8)</option>
+                                        <option value="UTC-7">Mountain Time (UTC-7)</option>
+                                        <option value="UTC-6">Central Time (UTC-6)</option>
+                                        <option value="UTC-5" selected>Eastern Time (UTC-5)</option>
+                                    </select>
                                 </div>
                                 
                                 <div class="form-actions">
@@ -1225,7 +1235,7 @@
                             
                             <div class="security-section">
                                 <h3>Change Password</h3>
-                                <form class="security-form" onsubmit="handlePasswordChange(event)">
+                                <form class="security-form">
                                     <div class="form-group">
                                         <label class="form-label">Current Password</label>
                                         <input type="password" class="form-input" required>
@@ -1265,8 +1275,37 @@
                                     </label>
                                 </div>
                             </div>
+                            
+                            <div class="security-section">
+                                <h3>Login Sessions</h3>
+                                <div class="session-list">
+                                    <div class="session-item">
+                                        <div class="session-info">
+                                            <div class="session-device">
+                                                <i class="fas fa-desktop"></i>
+                                                <span>Chrome on Windows</span>
+                                            </div>
+                                            <div class="session-details">
+                                                <span>New York, NY • Current session</span>
+                                            </div>
+                                        </div>
+                                        <span class="session-status current">Current</span>
+                                    </div>
+                                    <div class="session-item">
+                                        <div class="session-info">
+                                            <div class="session-device">
+                                                <i class="fas fa-mobile-alt"></i>
+                                                <span>Safari on iPhone</span>
+                                            </div>
+                                            <div class="session-details">
+                                                <span>New York, NY • 2 hours ago</span>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-outline btn-small">Revoke</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-
                         <!-- Billing Tab -->
                         <div class="profile-tab" id="billing-tab">
                             <div class="tab-header">
@@ -1298,76 +1337,39 @@
                                 
                                 <div class="billing-history">
                                     <h3>Billing History</h3>
-                                    <div class="invoice-list" id="invoiceList">
-                                        <!-- Populated by JavaScript -->
+                                    <div class="invoice-list">
+                                        <div class="invoice-item">
+                                            <div class="invoice-info">
+                                                <span class="invoice-date">Dec 15, 2024</span>
+                                                <span class="invoice-amount">$2,964.00</span>
+                                            </div>
+                                            <button class="btn btn-outline btn-small">
+                                                <i class="fas fa-download"></i>
+                                                Download
+                                            </button>
+                                        </div>
+                                        <div class="invoice-item">
+                                            <div class="invoice-info">
+                                                <span class="invoice-date">Nov 15, 2024</span>
+                                                <span class="invoice-amount">$2,964.00</span>
+                                            </div>
+                                            <button class="btn btn-outline btn-small">
+                                                <i class="fas fa-download"></i>
+                                                Download
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Notifications Tab -->
-                        <div class="profile-tab" id="notifications-tab">
-                            <div class="tab-header">
-                                <h2>Notification Settings</h2>
-                                <p>Choose how you want to be notified about important events</p>
-                            </div>
-                            
-                            <div class="notifications-section">
-                                <div class="notification-group">
-                                    <h3>Campaign Notifications</h3>
-                                    <div class="notification-option">
-                                        <div class="option-info">
-                                            <h4>Campaign Launch</h4>
-                                            <p>Get notified when campaigns are launched</p>
-                                        </div>
-                                        <label class="toggle-switch">
-                                            <input type="checkbox" checked>
-                                            <span class="slider"></span>
-                                        </label>
-                                    </div>
-                                    <div class="notification-option">
-                                        <div class="option-info">
-                                            <h4>Campaign Completion</h4>
-                                            <p>Get notified when campaigns are completed</p>
-                                        </div>
-                                        <label class="toggle-switch">
-                                            <input type="checkbox" checked>
-                                            <span class="slider"></span>
-                                        </label>
-                                    </div>
-                                </div>
-                                
-                                <div class="notification-group">
-                                    <h3>Reporting</h3>
-                                    <div class="notification-option">
-                                        <div class="option-info">
-                                            <h4>Weekly Reports</h4>
-                                            <p>Receive weekly security reports via email</p>
-                                        </div>
-                                        <label class="toggle-switch">
-                                            <input type="checkbox">
-                                            <span class="slider"></span>
-                                        </label>
-                                    </div>
-                                    <div class="notification-option">
-                                        <div class="option-info">
-                                            <h4>Monthly Summary</h4>
-                                            <p>Receive monthly security summary reports</p>
-                                        </div>
-                                        <label class="toggle-switch">
-                                            <input type="checkbox" checked>
-                                            <span class="slider"></span>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-    </main>
-
+                        
+<!-- Notifications Tab -->
+<div class="profile-tab" id="notifications-tab">
+    <div class="tab-header">
+      <h2>Notification Settings</h2>
+      <p>Choose how you want to be notified about important events</p>
+    </div>
+  
     <div class="notifications-section">
       <!-- Campaign Notifications -->
       <div class="notification-group">
